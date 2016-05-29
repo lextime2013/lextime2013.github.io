@@ -390,7 +390,8 @@
 <p>copy到工程的libs里面，并在build.gradle里面添加：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">useLibrary &apos;org.apache.http.legacy&apos;</span><br></pre></td></tr></table></figure>
 <p>2、主工程module的build.gradle里面是</p>
-<p>apply plugin: ‘com.android.application’<br>1<br>1<br>依赖工程module的build.gradle里面应该是依赖库的形式</p>
+<p>apply plugin: ‘com.android.application’</p>
+<p>依赖工程module的build.gradle里面应该是依赖库的形式</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apply plugin: &apos;com.android.library&apos;</span><br></pre></td></tr></table></figure>
 <p>3、依赖工程里面不需要applicationId。</p>
 <p>4、androidManifest.xml里面的appIication icon冲突可以删除或修改，错误日志：</p>

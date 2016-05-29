@@ -94,7 +94,7 @@
 <meta property="og:site_name" content="lex雷克斯vIp">
 <meta property="og:description" content="题外话不知道你们公司是不是还停留在eclipse IDE呢，是不是觉得由于项目依赖太麻烦就一直没迁移过去呢。Android Studio 2.0 都发布第三版预览版本了，Google也早已停止了对ADT插件的更新。
 但将老项目迁移过去确实有点麻烦，各种项目依赖、各种gradle build…什么的导致崩溃卡机。我已被虐过千百遍，但依然对它如初恋。我实践了一种方式，下面主要讲一下大体思路，对grad">
-<meta property="og:updated_time" content="2016-05-26T15:05:26.000Z">
+<meta property="og:updated_time" content="2016-05-29T07:13:31.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Eclipse项目迁移到Android Studio的一种方式">
 <meta name="twitter:description" content="题外话不知道你们公司是不是还停留在eclipse IDE呢，是不是觉得由于项目依赖太麻烦就一直没迁移过去呢。Android Studio 2.0 都发布第三版预览版本了，Google也早已停止了对ADT插件的更新。
@@ -290,7 +290,8 @@
 <p>copy到工程的libs里面，并在build.gradle里面添加：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">useLibrary &apos;org.apache.http.legacy&apos;</span><br></pre></td></tr></table></figure>
 <p>2、主工程module的build.gradle里面是</p>
-<p>apply plugin: ‘com.android.application’<br>1<br>1<br>依赖工程module的build.gradle里面应该是依赖库的形式</p>
+<p>apply plugin: ‘com.android.application’</p>
+<p>依赖工程module的build.gradle里面应该是依赖库的形式</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apply plugin: &apos;com.android.library&apos;</span><br></pre></td></tr></table></figure>
 <p>3、依赖工程里面不需要applicationId。</p>
 <p>4、androidManifest.xml里面的appIication icon冲突可以删除或修改，错误日志：</p>

@@ -43,7 +43,7 @@
     <link href="http://yoursite.com/2016/05/23/Eclipse%E9%A1%B9%E7%9B%AE%E8%BF%81%E7%A7%BB%E5%88%B0Android%20Studio%E7%9A%84%E4%B8%80%E7%A7%8D%E6%96%B9%E5%BC%8F/"/>
     <id>http://yoursite.com/2016/05/23/Eclipse项目迁移到Android Studio的一种方式/</id>
     <published>2016-05-23T13:52:23.000Z</published>
-    <updated>2016-05-26T15:05:26.000Z</updated>
+    <updated>2016-05-29T07:13:31.000Z</updated>
     
     <content type="html">&lt;h5 id=&quot;题外话&quot;&gt;&lt;a href=&quot;#题外话&quot; class=&quot;headerlink&quot; title=&quot;题外话&quot;&gt;&lt;/a&gt;题外话&lt;/h5&gt;&lt;p&gt;不知道你们公司是不是还停留在eclipse IDE呢，是不是觉得由于项目依赖太麻烦就一直没迁移过去呢。Android Studio 2.0 都发布第三版预览版本了，Google也早已停止了对ADT插件的更新。&lt;/p&gt;
 &lt;p&gt;但将老项目迁移过去确实有点麻烦，各种项目依赖、各种gradle build…什么的导致崩溃卡机。我已被虐过千百遍，但依然对它如初恋。我实践了一种方式，下面主要讲一下大体思路，对gradle完全不熟悉的话可能会被省去了一些细节。&lt;/p&gt;
@@ -59,7 +59,8 @@
 &lt;p&gt;copy到工程的libs里面，并在build.gradle里面添加：&lt;/p&gt;
 &lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;useLibrary &amp;apos;org.apache.http.legacy&amp;apos;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;p&gt;2、主工程module的build.gradle里面是&lt;/p&gt;
-&lt;p&gt;apply plugin: ‘com.android.application’&lt;br&gt;1&lt;br&gt;1&lt;br&gt;依赖工程module的build.gradle里面应该是依赖库的形式&lt;/p&gt;
+&lt;p&gt;apply plugin: ‘com.android.application’&lt;/p&gt;
+&lt;p&gt;依赖工程module的build.gradle里面应该是依赖库的形式&lt;/p&gt;
 &lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;apply plugin: &amp;apos;com.android.library&amp;apos;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;p&gt;3、依赖工程里面不需要applicationId。&lt;/p&gt;
 &lt;p&gt;4、androidManifest.xml里面的appIication icon冲突可以删除或修改，错误日志：&lt;/p&gt;
