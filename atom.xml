@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2016-05-28T16:28:32.000Z</updated>
+  <updated>2016-05-31T16:19:46.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -14,6 +14,55 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Android蓝牙通信</title>
+    <link href="http://yoursite.com/2016/05/30/Android%E8%93%9D%E7%89%99%E9%80%9A%E4%BF%A1/"/>
+    <id>http://yoursite.com/2016/05/30/Android蓝牙通信/</id>
+    <published>2016-05-30T14:04:37.000Z</published>
+    <updated>2016-05-31T16:19:46.000Z</updated>
+    
+    <content type="html">&lt;p&gt;近来工作做了很多Android手机对接蓝牙设备的工作，记录一下。&lt;/p&gt;
+&lt;h5 id=&quot;场景&quot;&gt;&lt;a href=&quot;#场景&quot; class=&quot;headerlink&quot; title=&quot;场景&quot;&gt;&lt;/a&gt;场景&lt;/h5&gt;&lt;p&gt;需要对接蓝牙设备，发送或者获取数据，比如蓝牙打印机、蓝牙体脂称、蓝牙电子血压计、蓝牙血糖仪、蓝牙身高尺等等。大致的过程就是手机跟设备互相连接认证，互传数据的过程。当然，对接不同的设备，会有不同的交互流程，同一类设备，针对不同厂商，也需要遵循不同厂商定制的SDK的相关协议。但都离不开蓝牙的核心协议，下面分经典蓝牙2.0以及低功耗蓝牙4.0（BLE）。&lt;/p&gt;
+&lt;h5 id=&quot;经典蓝牙2-0&quot;&gt;&lt;a href=&quot;#经典蓝牙2-0&quot; class=&quot;headerlink&quot; title=&quot;经典蓝牙2.0&quot;&gt;&lt;/a&gt;经典蓝牙2.0&lt;/h5&gt;&lt;p&gt;比较传统的设备只支持蓝牙2.0，SPP协议、HDP协议&lt;br&gt;过程：扫描，配对，连接，通信&lt;/p&gt;
+&lt;p&gt;参考：&lt;a href=&quot;http://blog.csdn.net/q610098308/article/details/45248423&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android 蓝牙开发基本流程&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;1、通用UUID：&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;private static final UUID SPP_UUID = UUID.fromString(&amp;quot;00001101-0000-1000-8000-00805F9B34FB&amp;quot;);&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;2、配对，反射设置密码（如果需要设置的话）&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;Method removeBondMethod = btClass.getDeclaredMethod(&amp;quot;setPin&amp;quot;,  new Class[] &amp;#123; byte[].class &amp;#125;); &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;return value = (Boolean) removeBondMethod.invoke(bluetoothDevice,  new Object[] &amp;#123; password.getBytes() &amp;#125;);&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;3、配对，反射调用绑定方法&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;Method createBondMethod = btClass.getMethod(&amp;quot;createBond&amp;quot;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Boolean value = (Bovolean) createBondMethod.invoke(btDevice);&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;4、连接，根据不同SDK方式&lt;br&gt;问题：getBluetoothService() called with no BluetoothManagerCallback&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;int sdk = Build.VERSION.SDK_INT;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;if (sdk &amp;gt;= 10) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    socket = mDevice.createInsecureRfcommSocketToServiceRecord(SPP_UUID);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125; else &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    socket = mDevice.createRfcommSocketToServiceRecord(SPP_UUID);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;h5 id=&quot;低功耗蓝牙4-0技术（BLE）&quot;&gt;&lt;a href=&quot;#低功耗蓝牙4-0技术（BLE）&quot; class=&quot;headerlink&quot; title=&quot;低功耗蓝牙4.0技术（BLE）&quot;&gt;&lt;/a&gt;低功耗蓝牙4.0技术（BLE）&lt;/h5&gt;&lt;p&gt;注意：从Android4.3（API-18）开始支持BLE，但只支持作为中心设备模式Central，也就是只支持Android设备主动扫描连接外围设备Peripheral，在Android5.0（API-21）两种模式都支持。蓝牙4.0将三种规格集一体，包括传统蓝牙技术、高速技术和低耗能技术&lt;/p&gt;
+&lt;p&gt;参考：&lt;a href=&quot;http://blog.csdn.net/zhaoshuzhaoshu/article/details/35281301/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;最全最详细的蓝牙版本介绍包含蓝牙4.0和4.1&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;过程：扫描，连接，发现服务，通信&lt;/p&gt;
+&lt;p&gt;1、获取BluetoothAdapter&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;mBluetoothAdapter = bluetoothManager.getAdapter();&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;2、判断是否支持蓝牙，并打开蓝牙(利用系统Intent的方式请求打开蓝牙)&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;if (mBluetoothAdapter == null || !mBluetoothAdapter.isEnabled()) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;3、搜索BLE设备&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;mBluetoothAdapter.startLeScan(mLeScanCallback);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;BluetoothAdapter.LeScanCallback // 搜索回调&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;注意：搜索时，你只能搜索传统蓝牙设备或者BLE设备，两者完全独立，不可同时被搜索。&lt;br&gt;实际使用：使用经典蓝牙搜索方式startDiscovery()能同时搜索到百捷2.0和百捷4.0的设备&lt;/p&gt;
+&lt;p&gt;4、连接GATT Server&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;mBluetoothGatt = device.connectGatt(this, false, mGattCallback);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;BluetoothGattCallback // 连接回调&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;5、连接成功。BluetoothGatt常规用到的几个操作示例&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;connect(); // 连接远程设备。&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;discoverServices(); // 搜索连接设备所支持的service。&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;disconnect(); // 断开与远程设备的GATT连接。&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;close(); // 关闭GATT Client端。&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;readCharacteristic(characteristic); // 读取指定的characteristic。&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;setCharacteristicNotification(characteristic, enabled); // 设置当指定characteristic值变化时，发出通知。&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;getServices(); // 获取远程设备所支持的services。&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;h5 id=&quot;一些实践心得&quot;&gt;&lt;a href=&quot;#一些实践心得&quot; class=&quot;headerlink&quot; title=&quot;一些实践心得&quot;&gt;&lt;/a&gt;一些实践心得&lt;/h5&gt;&lt;h6 id=&quot;关于蓝牙硬件&quot;&gt;&lt;a href=&quot;#关于蓝牙硬件&quot; class=&quot;headerlink&quot; title=&quot;关于蓝牙硬件&quot;&gt;&lt;/a&gt;关于蓝牙硬件&lt;/h6&gt;&lt;p&gt;对接蓝牙设备，一方面由于蓝牙设备的多样性，另一方面Android手机硬件、系统的多样性，会遇到比较多的问题就是蓝牙连接的稳定性问题。关于这个问题也是尝试了很多种方法去避免，分析其中一个原因就是：由代码驱动蓝牙硬件的过程，需要一定的时间，一定的时间等待，会带来极大稳定性的提高。比如启动蓝牙后延迟300ms在执行其他操作。另一个就是可以采用线程轮询判断一个状态是否已经启动，比如循环5次，每隔1秒执行判断操作。&lt;/p&gt;
+&lt;h6 id=&quot;关于优化&quot;&gt;&lt;a href=&quot;#关于优化&quot; class=&quot;headerlink&quot; title=&quot;关于优化&quot;&gt;&lt;/a&gt;关于优化&lt;/h6&gt;&lt;p&gt;必要时，考虑采用服务Service去获取设备的数据，或者设置单例模式。&lt;/p&gt;
+&lt;p&gt;如有错误，欢迎拍砖！&lt;/p&gt;
+&lt;p&gt;（呆完善）&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;近来工作做了很多Android手机对接蓝牙设备的工作，记录一下。&lt;/p&gt;
+&lt;h5 id=&quot;场景&quot;&gt;&lt;a href=&quot;#场景&quot; class=&quot;headerlink&quot; title=&quot;场景&quot;&gt;&lt;/a&gt;场景&lt;/h5&gt;&lt;p&gt;需要对接蓝牙设备，发送或者获取数据，比如蓝牙打印机、蓝牙体脂
+    
+    </summary>
+    
+    
+  </entry>
   
   <entry>
     <title>容易犯错的知识点</title>

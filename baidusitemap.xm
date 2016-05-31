@@ -4,6 +4,21 @@
 
     
   <url>
+    <loc>http://yoursite.com/2016/05/30/Android%E8%93%9D%E7%89%99%E9%80%9A%E4%BF%A1/</loc>
+    <lastmod>2016-05-31T16:19:46.000Z</lastmod>
+    <data>
+        <display>
+        <title>Android蓝牙通信</title>
+        <pubTime>2016-05-30T14:04:37.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://yoursite.com/2016/05/23/Eclipse%E9%A1%B9%E7%9B%AE%E8%BF%81%E7%A7%BB%E5%88%B0Android%20Studio%E7%9A%84%E4%B8%80%E7%A7%8D%E6%96%B9%E5%BC%8F/</loc>
     <lastmod>2016-05-29T07:13:31.000Z</lastmod>
     <data>
