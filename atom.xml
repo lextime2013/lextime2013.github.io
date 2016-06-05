@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2016-05-31T16:19:46.000Z</updated>
+  <updated>2016-06-05T07:38:50.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -14,6 +14,28 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Android自定义View计划启动</title>
+    <link href="http://yoursite.com/2016/06/05/Android%E8%87%AA%E5%AE%9A%E4%B9%89View%E8%AE%A1%E5%88%92%E5%90%AF%E5%8A%A8/"/>
+    <id>http://yoursite.com/2016/06/05/Android自定义View计划启动/</id>
+    <published>2016-06-05T07:37:09.000Z</published>
+    <updated>2016-06-05T07:38:50.000Z</updated>
+    
+    <content type="html">&lt;p&gt;开始启动Android自定义View计划&lt;/p&gt;
+&lt;p&gt;完善中…&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;开始启动Android自定义View计划&lt;/p&gt;
+&lt;p&gt;完善中…&lt;/p&gt;
+
+    
+    </summary>
+    
+    
+  </entry>
   
   <entry>
     <title>Android蓝牙通信</title>
