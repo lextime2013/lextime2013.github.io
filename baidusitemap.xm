@@ -4,11 +4,11 @@
 
     
   <url>
-    <loc>http://yoursite.com/2016/06/05/Android%E8%87%AA%E5%AE%9A%E4%B9%89View%E8%AE%A1%E5%88%92%E5%90%AF%E5%8A%A8/</loc>
-    <lastmod>2016-06-05T07:38:50.000Z</lastmod>
+    <loc>http://yoursite.com/2016/06/05/Android%E8%87%AA%E5%AE%9A%E4%B9%89View(%E4%B8%80)/</loc>
+    <lastmod>2016-06-11T10:36:18.000Z</lastmod>
     <data>
         <display>
-        <title>Android自定义View计划启动</title>
+        <title>Android自定义View(一)</title>
         <pubTime>2016-06-05T07:37:09.000Z</pubTime>
         
          

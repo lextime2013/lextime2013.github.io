@@ -73,6 +73,8 @@
 
 
 
+  
+
 
   <link rel="alternate" href="/atom.xml" title="lex雷克斯vIp" type="application/atom+xml" />
 
@@ -86,15 +88,24 @@
 
 
 
-<meta name="description" content="想要生存  就一定要疯狂">
-<meta property="og:type" content="website">
-<meta property="og:title" content="lex雷克斯vIp">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta name="description" content="关于自定义View，是Android学习的必经之路，个人觉得自定义View更重要的是关于绘图的计算算法，利用Android提供的API结合算法，才能绘制出比较复杂的图形。这次做的是一个时钟的自定义View Demo，熟悉下自定义View的各个步骤。先看下基本效果：
+
+一、实现自定义View流程onMeasure() -&amp;gt; onSizeChange() -&amp;gt; onLayout() -&amp;g">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android自定义View(一)">
+<meta property="og:url" content="http://yoursite.com/2016/06/05/Android自定义View(一)/index.html">
 <meta property="og:site_name" content="lex雷克斯vIp">
-<meta property="og:description" content="想要生存  就一定要疯狂">
+<meta property="og:description" content="关于自定义View，是Android学习的必经之路，个人觉得自定义View更重要的是关于绘图的计算算法，利用Android提供的API结合算法，才能绘制出比较复杂的图形。这次做的是一个时钟的自定义View Demo，熟悉下自定义View的各个步骤。先看下基本效果：
+
+一、实现自定义View流程onMeasure() -&amp;gt; onSizeChange() -&amp;gt; onLayout() -&amp;g">
+<meta property="og:image" content="https://raw.githubusercontent.com/lextime2013/view/master/show.gif">
+<meta property="og:updated_time" content="2016-06-11T10:36:18.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="lex雷克斯vIp">
-<meta name="twitter:description" content="想要生存  就一定要疯狂">
+<meta name="twitter:title" content="Android自定义View(一)">
+<meta name="twitter:description" content="关于自定义View，是Android学习的必经之路，个人觉得自定义View更重要的是关于绘图的计算算法，利用Android提供的API结合算法，才能绘制出比较复杂的图形。这次做的是一个时钟的自定义View Demo，熟悉下自定义View的各个步骤。先看下基本效果：
+
+一、实现自定义View流程onMeasure() -&amp;gt; onSizeChange() -&amp;gt; onLayout() -&amp;g">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/lextime2013/view/master/show.gif">
 
 
 
@@ -112,7 +123,7 @@
   };
 </script>
 
-  <title> lex雷克斯vIp </title>
+  <title> Android自定义View(一) | lex雷克斯vIp </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -133,9 +144,7 @@
     
   
 
-  <div class="container one-collumn sidebar-position-left 
-   page-home 
- ">
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -212,9 +221,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
   
@@ -234,10 +243,7 @@
             
             
               
-                
-                <a class="post-title-link" href="/2016/06/05/Android自定义View(一)/" itemprop="url">
-                  Android自定义View(一)
-                </a>
+                Android自定义View(一)
               
             
           </h1>
@@ -277,9 +283,7 @@
       
 
       
-        
-          
-            <p>关于自定义View，是Android学习的必经之路，个人觉得自定义View更重要的是关于绘图的计算算法，利用Android提供的API结合算法，才能绘制出比较复杂的图形。这次做的是一个时钟的自定义View Demo，熟悉下自定义View的各个步骤。先看下基本效果：</p>
+        <p>关于自定义View，是Android学习的必经之路，个人觉得自定义View更重要的是关于绘图的计算算法，利用Android提供的API结合算法，才能绘制出比较复杂的图形。这次做的是一个时钟的自定义View Demo，熟悉下自定义View的各个步骤。先看下基本效果：</p>
 <p><img src="https://raw.githubusercontent.com/lextime2013/view/master/show.gif" alt="image"></p>
 <h5 id="一、实现自定义View流程"><a href="#一、实现自定义View流程" class="headerlink" title="一、实现自定义View流程"></a>一、实现自定义View流程</h5><p>onMeasure() -&gt; onSizeChange() -&gt; onLayout() -&gt; onDraw()</p>
 <p>其中，onLayout()是父View布局子View的时候需要，也就是自定义ViewGroup的时候，这次我们没有使用到。</p>
@@ -304,16 +308,19 @@
 </ul>
 <p>源码已上传github<br><a href="https://github.com/lextime2013/view/" target="_blank" rel="external">https://github.com/lextime2013/view/</a></p>
 
-          
+      
+    </div>
+
+    <div>
+      
         
       
     </div>
 
     <div>
       
-    </div>
+        
 
-    <div>
       
     </div>
 
@@ -321,463 +328,32 @@
       
 
       
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
             
+              <a href="/2016/05/30/Android蓝牙通信/" rel="next" title="Android蓝牙通信">
+                <i class="fa fa-chevron-left"></i> Android蓝牙通信
+              </a>
             
-              
-                
-                <a class="post-title-link" href="/2016/05/30/Android蓝牙通信/" itemprop="url">
-                  Android蓝牙通信
-                </a>
-              
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
             
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-05-30T22:04:37+08:00" content="2016-05-30">
-              2016-05-30
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-
-          
+          </div>
         </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
       
 
       
-        
-          
-            <p>近来工作做了很多Android手机对接蓝牙设备的工作，记录一下。</p>
-<h5 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h5><p>需要对接蓝牙设备，发送或者获取数据，比如蓝牙打印机、蓝牙体脂称、蓝牙电子血压计、蓝牙血糖仪、蓝牙身高尺等等。大致的过程就是手机跟设备互相连接认证，互传数据的过程。当然，对接不同的设备，会有不同的交互流程，同一类设备，针对不同厂商，也需要遵循不同厂商定制的SDK的相关协议。但都离不开蓝牙的核心协议，下面分经典蓝牙2.0以及低功耗蓝牙4.0（BLE）。</p>
-<h5 id="经典蓝牙2-0"><a href="#经典蓝牙2-0" class="headerlink" title="经典蓝牙2.0"></a>经典蓝牙2.0</h5><p>比较传统的设备只支持蓝牙2.0，SPP协议、HDP协议<br>过程：扫描，配对，连接，通信</p>
-<p>参考：<a href="http://blog.csdn.net/q610098308/article/details/45248423" target="_blank" rel="external">Android 蓝牙开发基本流程</a></p>
-<p>1、通用UUID：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">private static final UUID SPP_UUID = UUID.fromString(&quot;00001101-0000-1000-8000-00805F9B34FB&quot;);</span><br></pre></td></tr></table></figure>
-<p>2、配对，反射设置密码（如果需要设置的话）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Method removeBondMethod = btClass.getDeclaredMethod(&quot;setPin&quot;,  new Class[] &#123; byte[].class &#125;); </span><br><span class="line">return value = (Boolean) removeBondMethod.invoke(bluetoothDevice,  new Object[] &#123; password.getBytes() &#125;);</span><br></pre></td></tr></table></figure>
-<p>3、配对，反射调用绑定方法</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Method createBondMethod = btClass.getMethod(&quot;createBond&quot;);</span><br><span class="line">Boolean value = (Bovolean) createBondMethod.invoke(btDevice);</span><br></pre></td></tr></table></figure>
-<p>4、连接，根据不同SDK方式<br>问题：getBluetoothService() called with no BluetoothManagerCallback</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">int sdk = Build.VERSION.SDK_INT;</span><br><span class="line">if (sdk &gt;= 10) &#123;</span><br><span class="line">    socket = mDevice.createInsecureRfcommSocketToServiceRecord(SPP_UUID);</span><br><span class="line">&#125; else &#123;</span><br><span class="line">    socket = mDevice.createRfcommSocketToServiceRecord(SPP_UUID);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h5 id="低功耗蓝牙4-0技术（BLE）"><a href="#低功耗蓝牙4-0技术（BLE）" class="headerlink" title="低功耗蓝牙4.0技术（BLE）"></a>低功耗蓝牙4.0技术（BLE）</h5><p>注意：从Android4.3（API-18）开始支持BLE，但只支持作为中心设备模式Central，也就是只支持Android设备主动扫描连接外围设备Peripheral，在Android5.0（API-21）两种模式都支持。蓝牙4.0将三种规格集一体，包括传统蓝牙技术、高速技术和低耗能技术</p>
-<p>参考：<a href="http://blog.csdn.net/zhaoshuzhaoshu/article/details/35281301/" target="_blank" rel="external">最全最详细的蓝牙版本介绍包含蓝牙4.0和4.1</a></p>
-<p>过程：扫描，连接，发现服务，通信</p>
-<p>1、获取BluetoothAdapter</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);</span><br><span class="line">mBluetoothAdapter = bluetoothManager.getAdapter();</span><br></pre></td></tr></table></figure>
-<p>2、判断是否支持蓝牙，并打开蓝牙(利用系统Intent的方式请求打开蓝牙)</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if (mBluetoothAdapter == null || !mBluetoothAdapter.isEnabled()) &#123;</span><br><span class="line">    Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);</span><br><span class="line">    startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>3、搜索BLE设备</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mBluetoothAdapter.startLeScan(mLeScanCallback);</span><br><span class="line">BluetoothAdapter.LeScanCallback // 搜索回调</span><br></pre></td></tr></table></figure>
-<p>注意：搜索时，你只能搜索传统蓝牙设备或者BLE设备，两者完全独立，不可同时被搜索。<br>实际使用：使用经典蓝牙搜索方式startDiscovery()能同时搜索到百捷2.0和百捷4.0的设备</p>
-<p>4、连接GATT Server</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mBluetoothGatt = device.connectGatt(this, false, mGattCallback);</span><br><span class="line">BluetoothGattCallback // 连接回调</span><br></pre></td></tr></table></figure>
-<p>5、连接成功。BluetoothGatt常规用到的几个操作示例</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">connect(); // 连接远程设备。</span><br><span class="line">discoverServices(); // 搜索连接设备所支持的service。</span><br><span class="line">disconnect(); // 断开与远程设备的GATT连接。</span><br><span class="line">close(); // 关闭GATT Client端。</span><br><span class="line">readCharacteristic(characteristic); // 读取指定的characteristic。</span><br><span class="line">setCharacteristicNotification(characteristic, enabled); // 设置当指定characteristic值变化时，发出通知。</span><br><span class="line">getServices(); // 获取远程设备所支持的services。</span><br></pre></td></tr></table></figure>
-<h5 id="一些实践心得"><a href="#一些实践心得" class="headerlink" title="一些实践心得"></a>一些实践心得</h5><h6 id="关于蓝牙硬件"><a href="#关于蓝牙硬件" class="headerlink" title="关于蓝牙硬件"></a>关于蓝牙硬件</h6><p>对接蓝牙设备，一方面由于蓝牙设备的多样性，另一方面Android手机硬件、系统的多样性，会遇到比较多的问题就是蓝牙连接的稳定性问题。关于这个问题也是尝试了很多种方法去避免，分析其中一个原因就是：由代码驱动蓝牙硬件的过程，需要一定的时间，一定的时间等待，会带来极大稳定性的提高。比如启动蓝牙后延迟300ms在执行其他操作。另一个就是可以采用线程轮询判断一个状态是否已经启动，比如循环5次，每隔1秒执行判断操作。</p>
-<h6 id="关于优化"><a href="#关于优化" class="headerlink" title="关于优化"></a>关于优化</h6><p>必要时，考虑采用服务Service去获取设备的数据，或者设置单例模式。</p>
-<p>如有错误，欢迎拍砖！</p>
-<p>（呆完善）</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
       
     </footer>
   </article>
 
 
-    
-      
 
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/05/29/容易犯错的知识点/" itemprop="url">
-                  容易犯错的知识点
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-05-29T00:27:00+08:00" content="2016-05-29">
-              2016-05-29
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h5 id="JAVA篇"><a href="#JAVA篇" class="headerlink" title="JAVA篇"></a>JAVA篇</h5><p>1、强转，(String)msg.obj —&gt; (String)null，可以执行</p>
-<p>2、遍历，String str : List<string>，如果list是null会崩溃</string></p>
-<p>3、集合添加，list.add(null)，可以执行，但list.addAll(null)，会崩溃</p>
-<p>4、包装类型，String.valueOf(null); 会崩溃</p>
-
-          
-        
+    <div class="post-spread">
       
     </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/05/23/Eclipse项目迁移到Android Studio的一种方式/" itemprop="url">
-                  Eclipse项目迁移到Android Studio的一种方式
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-05-23T21:52:23+08:00" content="2016-05-23">
-              2016-05-23
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h5 id="题外话"><a href="#题外话" class="headerlink" title="题外话"></a>题外话</h5><p>不知道你们公司是不是还停留在eclipse IDE呢，是不是觉得由于项目依赖太麻烦就一直没迁移过去呢。Android Studio 2.0 都发布第三版预览版本了，Google也早已停止了对ADT插件的更新。</p>
-<p>但将老项目迁移过去确实有点麻烦，各种项目依赖、各种gradle build…什么的导致崩溃卡机。我已被虐过千百遍，但依然对它如初恋。我实践了一种方式，下面主要讲一下大体思路，对gradle完全不熟悉的话可能会被省去了一些细节。</p>
-<h5 id="基本准备"><a href="#基本准备" class="headerlink" title="基本准备"></a>基本准备</h5><p>下载android studio，我这里用android studio1.3、1.4都试过，<br>新建一个工程，都是默认，确保这个工程能运行。然后看看这个工程文件，目录结构<br>这里写图片描述<br>.gradle、.idea、build、都是运行时产生，删除。重要的是gradle文件夹，gradlew，gradlew.bat，build.gradle，setting.gradle。然后熟悉其他文件是干嘛用的，是否删除或修改取决于你原来的eclipse项目。</p>
-<h5 id="新建文件夹然后copy工作"><a href="#新建文件夹然后copy工作" class="headerlink" title="新建文件夹然后copy工作"></a>新建文件夹然后copy工作</h5><p>新建一个文件夹，按照上面MyApplication的目录结构，copy一份，其中需要从eclipse项目中迁移过来的有src源代码，还有res资源，注意修改主工程build.gradle里面的applicationId。然后用Android Studio打开新建的项目即可。</p>
-<h5 id="如何解决项目依赖"><a href="#如何解决项目依赖" class="headerlink" title="如何解决项目依赖"></a>如何解决项目依赖</h5><p>很多情况下，并不想把原来的project变成一个module，所以有了工程中的module依赖。这里需要手动配置setting.gradle文件，添加</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">include &apos;:projectName&apos;</span><br><span class="line">project(&apos;:projectName&apos;).projectDir = new File(settingsDir, &apos;../projectName/moduleName&apos;)</span><br></pre></td></tr></table></figure>
-<p>然后在主工程的module的build.gradle文件里面添加</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    compile project(&apos;:projectName&apos;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>同步一下，这里就实现了对工程projectName中的module依赖。<br>可以参考：<br><a href="http://www.cnblogs.com/avenwu/p/4299340.html" target="_blank" rel="external">http://www.cnblogs.com/avenwu/p/4299340.html</a></p>
-<h5 id="遇到的一些问题"><a href="#遇到的一些问题" class="headerlink" title="遇到的一些问题"></a>遇到的一些问题</h5><p>1、Android6.0在api 23以上没有了apache的包，也就是没有了HttpClient等网络相关的类，需要使用的可以从以下路径找到，</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">**\android-sdk-windows\platforms\android-23\optional</span><br></pre></td></tr></table></figure>
-<p>copy到工程的libs里面，并在build.gradle里面添加：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">useLibrary &apos;org.apache.http.legacy&apos;</span><br></pre></td></tr></table></figure>
-<p>2、主工程module的build.gradle里面是</p>
-<p>apply plugin: ‘com.android.application’</p>
-<p>依赖工程module的build.gradle里面应该是依赖库的形式</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apply plugin: &apos;com.android.library&apos;</span><br></pre></td></tr></table></figure>
-<p>3、依赖工程里面不需要applicationId。</p>
-<p>4、androidManifest.xml里面的appIication icon冲突可以删除或修改，错误日志：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Error:Execution failed for task &apos;:app:processDebugManifest&apos;.</span><br><span class="line">&gt; Manifest merger failed : Attribute application@icon value=(@drawable/logo) from AndroidManifest.xml:49:9-38</span><br><span class="line"> is also present at</span><br><span class="line"> ...</span><br></pre></td></tr></table></figure>
-<p>5、引用重复的jar包，删除其中一个，错误日志：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Error:Execution failed for task &apos;:app:dexDebug&apos;.</span><br><span class="line">&gt; com.android.ide.common.process.ProcessException: org.gradle.process.internal.ExecException: Process &apos;command &apos;D:\Program Files\Java\jdk1.7.0_80\bin\java.exe&apos;&apos; finished with non-zero exit value 2</span><br></pre></td></tr></table></figure>
-<p>6、错误日志：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Error:Execution failed for task &apos;:app:packageDebug&apos;.</span><br><span class="line">&gt; Duplicate files copied in APK META-INF/LICENSE</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-<p>按照提示，添加：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">android &#123;</span><br><span class="line">    packagingOptions &#123;</span><br><span class="line">        exclude &apos;META-INF/LICENSE&apos;</span><br><span class="line">        exclude &apos;META-INF/DEPENDENCIES&apos;</span><br><span class="line">        exclude &apos;META-INF/NOTICE&apos;</span><br><span class="line">        exclude &apos;META-INF/LICENSE.txt&apos;</span><br><span class="line">        exclude &apos;META-INF/NOTICE.txt&apos;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h5 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h5><p>也就是将标准Android Studio工程里面的gradle相关文件原汁原味的copy到另外一个新建的、具有相同目录结构的文件夹里面，做一些相应的配置修改。打开Android Studio运行。</p>
-<h5 id="为什么使用这种方式？"><a href="#为什么使用这种方式？" class="headerlink" title="为什么使用这种方式？"></a>为什么使用这种方式？</h5><p>网上比较多的教程是eclipse导出gradle项目，生成build.gradle文件，再用android studio导入，我会觉得这个项目有点奇葩，各种ant、gradle构建的东西混杂在一起（对不起，我有代码洁癖），还会因为gradle构建版本的各种问题而运行不起来，而且项目依赖也并不怎么清晰。或许还有更简便的方法，我在瞎折腾了。</p>
-<h5 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h5><p>最后想说明一点，这是其中一种方式，我实践可用，记录下来一方面自己学习温故，另一方面希望能帮到一些人，这个方法或许有不足之处，希望指正。gradle配置方面还有很多，有些没涉及到的可能还需要添加其他的配置代码。</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/05/22/hello-world/" itemprop="url">
-                  Hello World
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-05-22T19:56:19+08:00" content="2016-05-22">
-              2016-05-22
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-  </section>
-
-  
+  </div>
 
 
           </div>
@@ -785,8 +361,8 @@
 
 
           <!-- 多说评论框 start -->
-<div class="ds-thread" data-thread-key="index.html"
-           data-title="" data-url="">
+<div class="ds-thread" data-thread-key="2016/06/05/Android自定义View(一)/"
+           data-title="Android自定义View(一)" data-url="http://yoursite.com/2016/06/05/Android自定义View(一)/">
       </div>
 <!-- 多说评论框 end -->
 <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
@@ -820,8 +396,17 @@ var duoshuoQuery = {short_name:"lextime2013"};
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel  sidebar-panel-active ">
+      <section class="site-overview sidebar-panel ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.gif"
@@ -864,6 +449,17 @@ var duoshuoQuery = {short_name:"lextime2013"};
 
       </section>
 
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#一、实现自定义View流程"><span class="nav-number">1.</span> <span class="nav-text">一、实现自定义View流程</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#onMeasure"><span class="nav-number">1.1.</span> <span class="nav-text">onMeasure()</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#onSizeChange"><span class="nav-number">1.2.</span> <span class="nav-text">onSizeChange()</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#onLayout"><span class="nav-number">1.3.</span> <span class="nav-text">onLayout()</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#onDraw"><span class="nav-number">1.4.</span> <span class="nav-text">onDraw()</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#二、用户交互，响应触摸事件"><span class="nav-number">2.</span> <span class="nav-text">二、用户交互，响应触摸事件</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#onTouchEvent"><span class="nav-number">2.1.</span> <span class="nav-text">onTouchEvent()</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#三、实现动画"><span class="nav-number">3.</span> <span class="nav-text">三、实现动画</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#四、算法"><span class="nav-number">4.</span> <span class="nav-text">四、算法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#五、自定义属性"><span class="nav-number">5.</span> <span class="nav-text">五、自定义属性</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#定义"><span class="nav-number">5.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#获取"><span class="nav-number">5.2.</span> <span class="nav-text">获取</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#使用"><span class="nav-number">5.3.</span> <span class="nav-text">使用</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#六、注意事项"><span class="nav-number">6.</span> <span class="nav-text">六、注意事项</span></a></li></ol></div>
+            
+          </div>
+        </section>
       
 
     </div>
@@ -967,6 +563,10 @@ var duoshuoQuery = {short_name:"lextime2013"};
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
 
   
 
