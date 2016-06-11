@@ -4,6 +4,21 @@
 
     
   <url>
+    <loc>http://yoursite.com/2016/05/29/%E5%AE%B9%E6%98%93%E7%8A%AF%E9%94%99%E7%9A%84%E7%9F%A5%E8%AF%86%E7%82%B9/</loc>
+    <lastmod>2016-06-11T15:25:21.000Z</lastmod>
+    <data>
+        <display>
+        <title>容易犯错的知识点</title>
+        <pubTime>2016-05-28T16:27:00.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://yoursite.com/2016/06/05/Android%E8%87%AA%E5%AE%9A%E4%B9%89View(%E4%B8%80)/</loc>
     <lastmod>2016-06-11T10:36:18.000Z</lastmod>
     <data>
@@ -40,21 +55,6 @@
         <display>
         <title>Eclipse项目迁移到Android Studio的一种方式</title>
         <pubTime>2016-05-23T13:52:23.000Z</pubTime>
-        
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://yoursite.com/2016/05/29/%E5%AE%B9%E6%98%93%E7%8A%AF%E9%94%99%E7%9A%84%E7%9F%A5%E8%AF%86%E7%82%B9/</loc>
-    <lastmod>2016-05-28T16:28:32.000Z</lastmod>
-    <data>
-        <display>
-        <title>容易犯错的知识点</title>
-        <pubTime>2016-05-28T16:27:00.000Z</pubTime>
         
          
            

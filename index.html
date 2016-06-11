@@ -523,6 +523,12 @@
 <p>2、遍历，String str : List<string>，如果list是null会崩溃</string></p>
 <p>3、集合添加，list.add(null)，可以执行，但list.addAll(null)，会崩溃</p>
 <p>4、包装类型，String.valueOf(null); 会崩溃</p>
+<p>5、从资源文件中获取颜色<br>textView.setTextColor(getResources().getColor(R.color.colorPrimary));</p>
+<p>6、从资源中获取字体大小<br>textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.text_sp));</p>
+<p>7、从资源文件中获取size，dp、sp、px —&gt; px，相同的sp、dp会 * density 转换成为相同的px，px会直接得到px</p>
+<p>getDimensionPixelOffset() // 去除小数部分int</p>
+<p>getDimensionPixelSize() // 获取四舍五入int</p>
+<p>getDimension() // 获取float</p>
 
           
         
