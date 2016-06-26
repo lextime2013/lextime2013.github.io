@@ -86,23 +86,17 @@
 
 
 
-<meta name="description" content="关于自定义View，是Android学习的必经之路，个人觉得自定义View更重要的是关于绘图的计算算法，利用Android提供的API结合算法，才能绘制出比较复杂的图形。这次做的是一个时钟的自定义View Demo，熟悉下自定义View的各个步骤。先看下基本效果：
-
-一、实现自定义View流程onMeasure() -&amp;gt; onSizeChange() -&amp;gt; onLayout() -&amp;g">
+<meta name="description" content="关于自定义View，是Android学习的必经之路，个人觉得自定义View更重要的是关于绘图的计算算法，利用Android提供的API结合算法，才能绘制出比较复杂的图形。这次做的是一个时钟的自定义View Demo，熟悉下自定义View的各个步骤。先看下基本效果：">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android自定义View(一)">
 <meta property="og:url" content="http://yoursite.com/2016/06/05/Android自定义View(一)/index.html">
 <meta property="og:site_name" content="lex雷克斯vIp">
-<meta property="og:description" content="关于自定义View，是Android学习的必经之路，个人觉得自定义View更重要的是关于绘图的计算算法，利用Android提供的API结合算法，才能绘制出比较复杂的图形。这次做的是一个时钟的自定义View Demo，熟悉下自定义View的各个步骤。先看下基本效果：
-
-一、实现自定义View流程onMeasure() -&amp;gt; onSizeChange() -&amp;gt; onLayout() -&amp;g">
+<meta property="og:description" content="关于自定义View，是Android学习的必经之路，个人觉得自定义View更重要的是关于绘图的计算算法，利用Android提供的API结合算法，才能绘制出比较复杂的图形。这次做的是一个时钟的自定义View Demo，熟悉下自定义View的各个步骤。先看下基本效果：">
 <meta property="og:image" content="https://raw.githubusercontent.com/lextime2013/view/master/show.gif">
-<meta property="og:updated_time" content="2016-06-11T10:36:18.000Z">
+<meta property="og:updated_time" content="2016-06-26T04:15:36.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android自定义View(一)">
-<meta name="twitter:description" content="关于自定义View，是Android学习的必经之路，个人觉得自定义View更重要的是关于绘图的计算算法，利用Android提供的API结合算法，才能绘制出比较复杂的图形。这次做的是一个时钟的自定义View Demo，熟悉下自定义View的各个步骤。先看下基本效果：
-
-一、实现自定义View流程onMeasure() -&amp;gt; onSizeChange() -&amp;gt; onLayout() -&amp;g">
+<meta name="twitter:description" content="关于自定义View，是Android学习的必经之路，个人觉得自定义View更重要的是关于绘图的计算算法，利用Android提供的API结合算法，才能绘制出比较复杂的图形。这次做的是一个时钟的自定义View Demo，熟悉下自定义View的各个步骤。先看下基本效果：">
 <meta name="twitter:image" content="https://raw.githubusercontent.com/lextime2013/view/master/show.gif">
 
 
@@ -282,7 +276,7 @@
 
       
         <p>关于自定义View，是Android学习的必经之路，个人觉得自定义View更重要的是关于绘图的计算算法，利用Android提供的API结合算法，才能绘制出比较复杂的图形。这次做的是一个时钟的自定义View Demo，熟悉下自定义View的各个步骤。先看下基本效果：</p>
-<p><img src="https://raw.githubusercontent.com/lextime2013/view/master/show.gif" alt="image"></p>
+<p><img src="https://raw.githubusercontent.com/lextime2013/view/master/show.gif" alt="image"><br><a id="more"></a></p>
 <h5 id="一、实现自定义View流程"><a href="#一、实现自定义View流程" class="headerlink" title="一、实现自定义View流程"></a>一、实现自定义View流程</h5><p>onMeasure() -&gt; onSizeChange() -&gt; onLayout() -&gt; onDraw()</p>
 <p>其中，onLayout()是父View布局子View的时候需要，也就是自定义ViewGroup的时候，这次我们没有使用到。</p>
 <h6 id="onMeasure"><a href="#onMeasure" class="headerlink" title="onMeasure()"></a>onMeasure()</h6><p>测量View的大小，在Android系统加载布局的时候，系统先测量各个子View的大小，然后通知父View需要多大的空间，父View再根据自身的大小来决定分配多少空间给子View。有三种测量模式：</p>

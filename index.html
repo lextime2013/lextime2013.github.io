@@ -278,23 +278,13 @@
 
       
         
-          
-            <p>Android App的开发中，经常需要用到线程。执行网络操作、进行数据库查找等异步操作。线程池的使用可以更方便的使用线程，记录一下对线程池的一些理解。</p>
-<h1 id="1、为什么要用线程池？"><a href="#1、为什么要用线程池？" class="headerlink" title="1、为什么要用线程池？"></a>1、为什么要用线程池？</h1><p>线程池有什么优点，在《Android开发艺术探索》这本书上面是这样写的：<br>1.1、重用线程池中的线程，避免因为线程的创建和销毁所带来的性能开销；<br>1.2、能有效控制线程池的最大并发数，避免大量的线程之间因互相抢占系统资源而导致的阻塞现象；<br>1.3、能够对线程进行简单的管理，并提供定时执行以及在指定间隔循环执行等功能。</p>
-<h1 id="2、熟悉几个概念"><a href="#2、熟悉几个概念" class="headerlink" title="2、熟悉几个概念"></a>2、熟悉几个概念</h1><p>Executor是一个接口，线程池的实现类是ThreadPoolExecutor。ThreadPoolExecutor的构造方法里面的参数：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public ThreadPoolExecutor (</span><br><span class="line">int corePoolSize, </span><br><span class="line">int maxmumPoolSize, </span><br><span class="line">long keepAliveTime, </span><br><span class="line">TimeUnit unit, </span><br><span class="line">BlockingQueue&lt;Runnable runnable&gt; workQueue, </span><br><span class="line">ThreadFactory threadFactory)</span><br></pre></td></tr></table></figure></p>
-<h2 id="2-1、corePoolSize"><a href="#2-1、corePoolSize" class="headerlink" title="2.1、corePoolSize"></a>2.1、corePoolSize</h2><p>核心线程数，会在线程池里面一直存活的线程，也就是能够及时快速响应任务的执行。但可以通过设置allowCoreThreadTimeOut设置为闲置等待keepAliveTime而终止。</p>
-<h2 id="2-2、maxmumPoolSize"><a href="#2-2、maxmumPoolSize" class="headerlink" title="2.2、maxmumPoolSize"></a>2.2、maxmumPoolSize</h2><p>最大线程数，超过最大线程数的任务会被阻塞。</p>
-<h2 id="2-3、keepAliveTime、unit"><a href="#2-3、keepAliveTime、unit" class="headerlink" title="2.3、keepAliveTime、unit"></a>2.3、keepAliveTime、unit</h2><p>非核心线程闲置的超时时间，allowCoreThreadTimeOut = true后，对核心线程也同样起作用。</p>
-<h2 id="2-4、workQueue"><a href="#2-4、workQueue" class="headerlink" title="2.4、workQueue"></a>2.4、workQueue</h2><p>通过execute()方法提交的runnable都会添加到该任务队列中。</p>
-<h2 id="2-5、threadFactiry"><a href="#2-5、threadFactiry" class="headerlink" title="2.5、threadFactiry"></a>2.5、threadFactiry</h2><p>线程工厂，为线程池提供线程，可以实现指定设置的线程。<br>随着任务的增多，线程池会首先考虑核心线程，再考虑插入任务队列、非核心线程，再考虑线程池最大线程数，然后拒绝执行任务。</p>
-<h1 id="3、线程池的分类"><a href="#3、线程池的分类" class="headerlink" title="3、线程池的分类"></a>3、线程池的分类</h1><h2 id="3-1、FixedThreadPool"><a href="#3-1、FixedThreadPool" class="headerlink" title="3.1、FixedThreadPool"></a>3.1、FixedThreadPool</h2><p>只有数量固定的核心线程，并且没有超时机制，任务队列没有大小限制。快速响应外界的请求。</p>
-<h2 id="3-2、CachedThreadPool"><a href="#3-2、CachedThreadPool" class="headerlink" title="3.2、CachedThreadPool"></a>3.2、CachedThreadPool</h2><p>只有非核心线程，线程数为Integer.MAX_VALUE，闲置线程超时时长为60秒，任务队列为空集合，任何任务都会立即执行，适合大量耗时较少的任务。整个线程池也可能处于闲置状态，几乎不占用系统资源。</p>
-<h2 id="3-3、ScheduledThreadPool"><a href="#3-3、ScheduledThreadPool" class="headerlink" title="3.3、ScheduledThreadPool"></a>3.3、ScheduledThreadPool</h2><p>核心线程数固定，非核心线程数没有限制，闲置时会被立即回收，执行定时任务和具有固定周期的循环任务。</p>
-<h2 id="3-4、SingleTheadExecutor"><a href="#3-4、SingleTheadExecutor" class="headerlink" title="3.4、SingleTheadExecutor"></a>3.4、SingleTheadExecutor</h2><p>只有一个核心线程，所有任务都会在同一个线程中按顺序执行，任务之间不需要处理线程同步的问题。</p>
-<h1 id="4、注意事项"><a href="#4、注意事项" class="headerlink" title="4、注意事项"></a>4、注意事项</h1><p>线程池的关闭，threadPool.submit()<br>调用后，如果再往线程池中添加任务，就会抛异常，thread = 0<br>如果只是想要终止该任务，可以使用以下方式：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FutureTask.cancel(true);</span><br></pre></td></tr></table></figure></p>
-<p>关于Future、FutureTask可以参考：<a href="http://www.cnblogs.com/wenjiang/archive/2012/09/02/2668089.html" target="_blank" rel="external">新手浅谈Future</a></p>
-
-          
+          <p>Android App的开发中，经常需要用到线程。执行网络操作、进行数据库查找等异步操作。线程池的使用可以更方便的使用线程，记录一下对线程池的一些理解。</p>
+<h1 id="1、为什么要用线程池？"><a href="#1、为什么要用线程池？" class="headerlink" title="1、为什么要用线程池？"></a>1、为什么要用线程池？</h1><p>线程池有什么优点，在《Android开发艺术探索》这本书上面是这样写的：<br>1.1、重用线程池中的线程，避免因为线程的创建和销毁所带来的性能开销；<br>1.2、能有效控制线程池的最大并发数，避免大量的线程之间因互相抢占系统资源而导致的阻塞现象；<br>1.3、能够对线程进行简单的管理，并提供定时执行以及在指定间隔循环执行等功能。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/06/25/Android线程池的使用/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
         
       
     </div>
@@ -385,33 +375,13 @@
 
       
         
-          
-            <p>关于自定义View，是Android学习的必经之路，个人觉得自定义View更重要的是关于绘图的计算算法，利用Android提供的API结合算法，才能绘制出比较复杂的图形。这次做的是一个时钟的自定义View Demo，熟悉下自定义View的各个步骤。先看下基本效果：</p>
-<p><img src="https://raw.githubusercontent.com/lextime2013/view/master/show.gif" alt="image"></p>
-<h5 id="一、实现自定义View流程"><a href="#一、实现自定义View流程" class="headerlink" title="一、实现自定义View流程"></a>一、实现自定义View流程</h5><p>onMeasure() -&gt; onSizeChange() -&gt; onLayout() -&gt; onDraw()</p>
-<p>其中，onLayout()是父View布局子View的时候需要，也就是自定义ViewGroup的时候，这次我们没有使用到。</p>
-<h6 id="onMeasure"><a href="#onMeasure" class="headerlink" title="onMeasure()"></a>onMeasure()</h6><p>测量View的大小，在Android系统加载布局的时候，系统先测量各个子View的大小，然后通知父View需要多大的空间，父View再根据自身的大小来决定分配多少空间给子View。有三种测量模式：</p>
-<p>MeasureSpec.EXACTLY：一般是设置了明确的值或者是match_parent </p>
-<p>MeasureSpec.AT_MOST：子视图存在最大值，一般为warp_content </p>
-<p>MeasureSpec.UNSPECIFIED：子视图可以是任意想要的大小，ScrollView这种<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) &#123;</span><br><span class="line">    super.onMeasure(widthMeasureSpec, heightMeasureSpec);</span><br><span class="line"></span><br><span class="line">    int width = MeasureSpec.getSize(widthMeasureSpec);</span><br><span class="line">    int height = MeasureSpec.getSize(heightMeasureSpec);</span><br><span class="line">    int widthMode = MeasureSpec.getMode(widthMeasureSpec);</span><br><span class="line">    int heightMode = MeasureSpec.getSize(heightMeasureSpec);</span><br><span class="line"></span><br><span class="line">    int circleRadius = Math.min(width, height);</span><br><span class="line"></span><br><span class="line">    if(widthMode == MeasureSpec.UNSPECIFIED) &#123;</span><br><span class="line">        circleRadius = height;</span><br><span class="line">    &#125; else if(heightMode == MeasureSpec.UNSPECIFIED) &#123;</span><br><span class="line">        circleRadius = width;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    setMeasuredDimension(circleRadius, circleRadius);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h6 id="onSizeChange"><a href="#onSizeChange" class="headerlink" title="onSizeChange()"></a>onSizeChange()</h6><p>这个方法可以知道布局的大小，并且是在View的大小发生改变的时候，也会调用这个方法，也就是通过这个方法，绘制的大小也能够动态发生改变。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">protected void onSizeChanged(int w, int h, int oldw, int oldh) &#123;</span><br><span class="line">    super.onSizeChanged(w, h, oldw, oldh);</span><br><span class="line">    if(mRadius &lt;= 0) &#123;</span><br><span class="line">        mRadius = w / 2F;</span><br><span class="line">    &#125;</span><br><span class="line">    mSecondLineX = mMinuteLineX = mHourLineX = mRadius;</span><br><span class="line">    mSecondLineY = mMinuteLineY = mHourLineY = 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h6 id="onLayout"><a href="#onLayout" class="headerlink" title="onLayout()"></a>onLayout()</h6><p>也可以获取布局的大小，但通常实现自定义ViewGroup的时候需要。</p>
-<h6 id="onDraw"><a href="#onDraw" class="headerlink" title="onDraw()"></a>onDraw()</h6><p>测量方法，也就是自定义View中最重要的方法，调用频率高，不应该在该方法初始化变量、申请内存、耗时操作。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">protected void onDraw(Canvas canvas) &#123;</span><br><span class="line">    super.onDraw(canvas);</span><br><span class="line">    postInvalidateDelayed(1000);</span><br><span class="line">    calculateTime();</span><br><span class="line">    // 表盘</span><br><span class="line">    mPaint.setColor(mContext.getResources().getColor(R.color.black));</span><br><span class="line">    canvas.drawCircle(mRadius, mRadius, mRadius, mPaint);</span><br><span class="line">    mPaint.setColor(mContext.getResources().getColor(R.color.white));</span><br><span class="line">    canvas.drawCircle(mRadius, mRadius, mRadius * 14F / 15F, mPaint);</span><br><span class="line">    drawNumber(canvas);</span><br><span class="line">    // 时分秒针</span><br><span class="line">    canvas.drawLine(mRadius, mRadius, mSecondLineX, mSecondLineY, mSecondPaint);</span><br><span class="line">    canvas.drawLine(mRadius, mRadius, mMinuteLineX, mMinuteLineY, mMinutePaint);</span><br><span class="line">    canvas.drawLine(mRadius, mRadius, mHourLineX, mHourLineY, mHourPaint);</span><br><span class="line">    // 中点</span><br><span class="line">    canvas.drawCircle(mRadius, mRadius, 20, mMinutePaint);</span><br><span class="line">    // 时间</span><br><span class="line">    drawTime(canvas);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h5 id="二、用户交互，响应触摸事件"><a href="#二、用户交互，响应触摸事件" class="headerlink" title="二、用户交互，响应触摸事件"></a>二、用户交互，响应触摸事件</h5><h6 id="onTouchEvent"><a href="#onTouchEvent" class="headerlink" title="onTouchEvent()"></a>onTouchEvent()</h6><p>上面几个方法是将自定义View绘制出来，想要与用户发生交互，还要通过onTouchEvent()实现。<br>通过对ACTION_DOWN、ACTION_MOVE、ACTION_UP三个事件进行处理，处理用户的触摸事件，达到与用户交互的需求。这里demo对时间数字的区域进行判断，如果在数字区域，那么允许拖拽，并且拖拽的过程中需要判断数字的四个角，不能超出表盘的半径（这里面并非有实际的意义，只是为了实现demo的算法需求）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">public boolean onTouchEvent(MotionEvent event) &#123;</span><br><span class="line">    switch (event.getAction()) &#123;</span><br><span class="line">        case MotionEvent.ACTION_DOWN:</span><br><span class="line">            mClickX = event.getX();</span><br><span class="line">            mClickY = event.getY();</span><br><span class="line">            if(mRect.contains((int) (mClickX - mTextX), (int) (mClickY - mTextY))) &#123;</span><br><span class="line">                mIsDrag = true;</span><br><span class="line">            &#125;</span><br><span class="line">            break;</span><br><span class="line">        case MotionEvent.ACTION_MOVE:</span><br><span class="line">            if(mIsDrag) &#123;</span><br><span class="line">                float x = event.getX() - mClickX;</span><br><span class="line">                float y = event.getY() - mClickY;</span><br><span class="line"></span><br><span class="line">                mClickX = event.getX();</span><br><span class="line">                mClickY = event.getY();</span><br><span class="line"></span><br><span class="line">                float tempX1 = mTextX + x;</span><br><span class="line">                float tempX2 = tempX1 + mRect.width();</span><br><span class="line">                float tempY1 = mTextY + y;</span><br><span class="line">                float tempY2 = tempY1 - mRect.height();</span><br><span class="line"></span><br><span class="line">                // 左上角</span><br><span class="line">                float lenX1 = tempX1 - mRadius;</span><br><span class="line">                float lenY1 = tempY1 - mRadius;</span><br><span class="line">                float len1 = (float) Math.sqrt(lenX1 * lenX1 + lenY1 * lenY1);</span><br><span class="line">                // 左下角</span><br><span class="line">                float lenX2 = tempX1 - mRadius;</span><br><span class="line">                float lenY2 = tempY2 - mRadius;</span><br><span class="line">                float len2 = (float) Math.sqrt(lenX2 * lenX2 + lenY2 * lenY2);</span><br><span class="line">                // 右上角</span><br><span class="line">                float lenX3 = tempX2 - mRadius;</span><br><span class="line">                float lenY3 = tempY1 - mRadius;</span><br><span class="line">                float len3 = (float) Math.sqrt(lenX3 * lenX3 + lenY3 * lenY3);</span><br><span class="line">                // 右下角</span><br><span class="line">                float lenX4 = tempX2 - mRadius;</span><br><span class="line">                float lenY4 = tempY2 - mRadius;</span><br><span class="line">                float len4 = (float) Math.sqrt(lenX4 * lenX4 + lenY4 * lenY4);</span><br><span class="line"></span><br><span class="line">                if(len1 &gt; mRadius || len2 &gt; mRadius || len3 &gt; mRadius || len4 &gt; mRadius) &#123;</span><br><span class="line">                    return false;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                mTextX = tempX1;</span><br><span class="line">                mTextY = tempY1;</span><br><span class="line"></span><br><span class="line">                invalidate();</span><br><span class="line">            &#125;</span><br><span class="line">            break;</span><br><span class="line">        case MotionEvent.ACTION_UP:</span><br><span class="line">            if(mIsDrag) &#123;</span><br><span class="line">                mIsDrag = false;</span><br><span class="line">            &#125;</span><br><span class="line">            break;</span><br><span class="line">        default:break;</span><br><span class="line">    &#125;</span><br><span class="line">    return true;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h5 id="三、实现动画"><a href="#三、实现动画" class="headerlink" title="三、实现动画"></a>三、实现动画</h5><p>自定义View有要求动画的，可以调用自身的invilidate()，或者非UI线程的postInvalidate()刷新自身，这时候自定义View会重新调用onDraw()方法，以达到View的动画效果。<br>postInvalidateDelay()还可以实现延迟发送刷新消息，将该方法写在onDraw()方法里面，延迟1000毫秒刷新一次，从而实现了时钟每一秒对时分秒针、时间数字的刷新需求。</p>
-<h5 id="四、算法"><a href="#四、算法" class="headerlink" title="四、算法"></a>四、算法</h5><p>在自定义View中，绘图算法是挺重要的，这直接影响到能不能按照设计绘制出来，这里demo是对时分秒针的位置的算法，以及拖拽的过程中，判断不可以越界的算法。结合源码参考calculateTime()、onTouchEvent()</p>
-<h5 id="五、自定义属性"><a href="#五、自定义属性" class="headerlink" title="五、自定义属性"></a>五、自定义属性</h5><p>可以设置自定义的属性，比如设置时钟的半径大小</p>
-<h6 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h6><p>在/values/attrs.xml里面定义<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;declare-styleable name=&quot;CircleView&quot;&gt;</span><br><span class="line">    &lt;attr name=&quot;radius&quot; format=&quot;dimension&quot;/&gt;</span><br><span class="line">&lt;/declare-styleable&gt;</span><br></pre></td></tr></table></figure></p>
-<h6 id="获取"><a href="#获取" class="headerlink" title="获取"></a>获取</h6><p>然后在代码里面使用，可以在构造方法里面取出来<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">TypedArray typedArray = context.getTheme().obtainStyledAttributes(attributeSet, R.styleable.CircleView, defStyleAttr, 0);</span><br><span class="line">if(typedArray != null &amp;&amp; typedArray.getIndexCount() &gt; 0) &#123;</span><br><span class="line">    for(int i = 0; i &lt; typedArray.getIndexCount(); i++) &#123;</span><br><span class="line">        switch (typedArray.getIndex(i)) &#123;</span><br><span class="line">            case R.styleable.CircleView_radius:</span><br><span class="line">                mRadius = typedArray.getDimension(i, 400F);</span><br><span class="line">                break;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    typedArray.recycle();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h6 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;com.lextime2013.view.widget.TimeView</span><br><span class="line">    xmlns:custom=&quot;http://schemas.android.com/apk/res-auto&quot;</span><br><span class="line">    android:id=&quot;@+id/circle_view&quot;</span><br><span class="line">    android:layout_width=&quot;match_parent&quot;</span><br><span class="line">    android:layout_height=&quot;match_parent&quot;</span><br><span class="line">    custom:radius=&quot;160dp&quot;</span><br><span class="line">    /&gt;</span><br></pre></td></tr></table></figure>
-<h5 id="六、注意事项"><a href="#六、注意事项" class="headerlink" title="六、注意事项"></a>六、注意事项</h5><ul>
-<li>字体起点(x, y)是指左下角</li>
-<li>onDraw()不要进行初始化工作，不可以进行申请内存、耗时操作</li>
-<li>没特殊情况，注意使用float类型处理坐标</li>
-</ul>
-<p>源码已上传github<br><a href="https://github.com/lextime2013/view/" target="_blank" rel="external">https://github.com/lextime2013/view/</a></p>
-
-          
+          <p>关于自定义View，是Android学习的必经之路，个人觉得自定义View更重要的是关于绘图的计算算法，利用Android提供的API结合算法，才能绘制出比较复杂的图形。这次做的是一个时钟的自定义View Demo，熟悉下自定义View的各个步骤。先看下基本效果：</p>
+<p><img src="https://raw.githubusercontent.com/lextime2013/view/master/show.gif" alt="image"><br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/06/05/Android自定义View(一)/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
         
       
     </div>
@@ -502,39 +472,14 @@
 
       
         
-          
-            <p>近来工作做了很多Android手机对接蓝牙设备的工作，记录一下。</p>
+          <p>近来工作做了很多Android手机对接蓝牙设备的工作，记录一下。</p>
 <h5 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h5><p>需要对接蓝牙设备，发送或者获取数据，比如蓝牙打印机、蓝牙体脂称、蓝牙电子血压计、蓝牙血糖仪、蓝牙身高尺等等。大致的过程就是手机跟设备互相连接认证，互传数据的过程。当然，对接不同的设备，会有不同的交互流程，同一类设备，针对不同厂商，也需要遵循不同厂商定制的SDK的相关协议。但都离不开蓝牙的核心协议，下面分经典蓝牙2.0以及低功耗蓝牙4.0（BLE）。</p>
-<h5 id="经典蓝牙2-0"><a href="#经典蓝牙2-0" class="headerlink" title="经典蓝牙2.0"></a>经典蓝牙2.0</h5><p>比较传统的设备只支持蓝牙2.0，SPP协议、HDP协议<br>过程：扫描，配对，连接，通信</p>
-<p>参考：<a href="http://blog.csdn.net/q610098308/article/details/45248423" target="_blank" rel="external">Android 蓝牙开发基本流程</a></p>
-<p>1、通用UUID：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">private static final UUID SPP_UUID = UUID.fromString(&quot;00001101-0000-1000-8000-00805F9B34FB&quot;);</span><br></pre></td></tr></table></figure>
-<p>2、配对，反射设置密码（如果需要设置的话）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Method removeBondMethod = btClass.getDeclaredMethod(&quot;setPin&quot;,  new Class[] &#123; byte[].class &#125;); </span><br><span class="line">return value = (Boolean) removeBondMethod.invoke(bluetoothDevice,  new Object[] &#123; password.getBytes() &#125;);</span><br></pre></td></tr></table></figure>
-<p>3、配对，反射调用绑定方法</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Method createBondMethod = btClass.getMethod(&quot;createBond&quot;);</span><br><span class="line">Boolean value = (Bovolean) createBondMethod.invoke(btDevice);</span><br></pre></td></tr></table></figure>
-<p>4、连接，根据不同SDK方式<br>问题：getBluetoothService() called with no BluetoothManagerCallback</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">int sdk = Build.VERSION.SDK_INT;</span><br><span class="line">if (sdk &gt;= 10) &#123;</span><br><span class="line">    socket = mDevice.createInsecureRfcommSocketToServiceRecord(SPP_UUID);</span><br><span class="line">&#125; else &#123;</span><br><span class="line">    socket = mDevice.createRfcommSocketToServiceRecord(SPP_UUID);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h5 id="低功耗蓝牙4-0技术（BLE）"><a href="#低功耗蓝牙4-0技术（BLE）" class="headerlink" title="低功耗蓝牙4.0技术（BLE）"></a>低功耗蓝牙4.0技术（BLE）</h5><p>注意：从Android4.3（API-18）开始支持BLE，但只支持作为中心设备模式Central，也就是只支持Android设备主动扫描连接外围设备Peripheral，在Android5.0（API-21）两种模式都支持。蓝牙4.0将三种规格集一体，包括传统蓝牙技术、高速技术和低耗能技术</p>
-<p>参考：<a href="http://blog.csdn.net/zhaoshuzhaoshu/article/details/35281301/" target="_blank" rel="external">最全最详细的蓝牙版本介绍包含蓝牙4.0和4.1</a></p>
-<p>过程：扫描，连接，发现服务，通信</p>
-<p>1、获取BluetoothAdapter</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);</span><br><span class="line">mBluetoothAdapter = bluetoothManager.getAdapter();</span><br></pre></td></tr></table></figure>
-<p>2、判断是否支持蓝牙，并打开蓝牙(利用系统Intent的方式请求打开蓝牙)</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if (mBluetoothAdapter == null || !mBluetoothAdapter.isEnabled()) &#123;</span><br><span class="line">    Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);</span><br><span class="line">    startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>3、搜索BLE设备</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mBluetoothAdapter.startLeScan(mLeScanCallback);</span><br><span class="line">BluetoothAdapter.LeScanCallback // 搜索回调</span><br></pre></td></tr></table></figure>
-<p>注意：搜索时，你只能搜索传统蓝牙设备或者BLE设备，两者完全独立，不可同时被搜索。<br>实际使用：使用经典蓝牙搜索方式startDiscovery()能同时搜索到百捷2.0和百捷4.0的设备</p>
-<p>4、连接GATT Server</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mBluetoothGatt = device.connectGatt(this, false, mGattCallback);</span><br><span class="line">BluetoothGattCallback // 连接回调</span><br></pre></td></tr></table></figure>
-<p>5、连接成功。BluetoothGatt常规用到的几个操作示例</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">connect(); // 连接远程设备。</span><br><span class="line">discoverServices(); // 搜索连接设备所支持的service。</span><br><span class="line">disconnect(); // 断开与远程设备的GATT连接。</span><br><span class="line">close(); // 关闭GATT Client端。</span><br><span class="line">readCharacteristic(characteristic); // 读取指定的characteristic。</span><br><span class="line">setCharacteristicNotification(characteristic, enabled); // 设置当指定characteristic值变化时，发出通知。</span><br><span class="line">getServices(); // 获取远程设备所支持的services。</span><br></pre></td></tr></table></figure>
-<h5 id="一些实践心得"><a href="#一些实践心得" class="headerlink" title="一些实践心得"></a>一些实践心得</h5><h6 id="关于蓝牙硬件"><a href="#关于蓝牙硬件" class="headerlink" title="关于蓝牙硬件"></a>关于蓝牙硬件</h6><p>对接蓝牙设备，一方面由于蓝牙设备的多样性，另一方面Android手机硬件、系统的多样性，会遇到比较多的问题就是蓝牙连接的稳定性问题。关于这个问题也是尝试了很多种方法去避免，分析其中一个原因就是：由代码驱动蓝牙硬件的过程，需要一定的时间，一定的时间等待，会带来极大稳定性的提高。比如启动蓝牙后延迟300ms在执行其他操作。另一个就是可以采用线程轮询判断一个状态是否已经启动，比如循环5次，每隔1秒执行判断操作。</p>
-<h6 id="关于优化"><a href="#关于优化" class="headerlink" title="关于优化"></a>关于优化</h6><p>必要时，考虑采用服务Service去获取设备的数据，或者设置单例模式。</p>
-<p>如有错误，欢迎拍砖！</p>
-<p>（呆完善）</p>
-
-          
+<h5 id="经典蓝牙2-0"><a href="#经典蓝牙2-0" class="headerlink" title="经典蓝牙2.0"></a>经典蓝牙2.0</h5><p>比较传统的设备只支持蓝牙2.0，SPP协议、HDP协议<br>过程：扫描，配对，连接，通信<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/05/30/Android蓝牙通信/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
         
       
     </div>
@@ -625,19 +570,18 @@
 
       
         
-          
-            <h5 id="JAVA篇"><a href="#JAVA篇" class="headerlink" title="JAVA篇"></a>JAVA篇</h5><p>1、强转，(String)msg.obj —&gt; (String)null，可以执行</p>
-<p>2、遍历，String str : List<string>，如果list是null会崩溃</string></p>
+          <h5 id="JAVA篇"><a href="#JAVA篇" class="headerlink" title="JAVA篇"></a>JAVA篇</h5><p>1、强转，(String)msg.obj —&gt; (String)null，可以执行</p>
+<p>2、遍历，String str : List<String>，如果list是null会崩溃</p>
 <p>3、集合添加，list.add(null)，可以执行，但list.addAll(null)，会崩溃</p>
 <p>4、包装类型，String.valueOf(null); 会崩溃</p>
 <p>5、从资源文件中获取颜色<br>textView.setTextColor(getResources().getColor(R.color.colorPrimary));</p>
 <p>6、从资源中获取字体大小<br>textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.text_sp));</p>
-<p>7、从资源文件中获取size，dp、sp、px —&gt; px，相同的sp、dp会 * density 转换成为相同的px，px会直接得到px</p>
-<p>getDimensionPixelOffset() // 去除小数部分int</p>
-<p>getDimensionPixelSize() // 获取四舍五入int</p>
-<p>getDimension() // 获取float</p>
-
-          
+<p>7、从资源文件中获取size，dp、sp、px —&gt; px，相同的sp、dp会 * density 转换成为相同的px，px会直接得到px<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/05/29/容易犯错的知识点/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
         
       
     </div>
@@ -728,38 +672,13 @@
 
       
         
-          
-            <h5 id="题外话"><a href="#题外话" class="headerlink" title="题外话"></a>题外话</h5><p>不知道你们公司是不是还停留在eclipse IDE呢，是不是觉得由于项目依赖太麻烦就一直没迁移过去呢。Android Studio 2.0 都发布第三版预览版本了，Google也早已停止了对ADT插件的更新。</p>
-<p>但将老项目迁移过去确实有点麻烦，各种项目依赖、各种gradle build…什么的导致崩溃卡机。我已被虐过千百遍，但依然对它如初恋。我实践了一种方式，下面主要讲一下大体思路，对gradle完全不熟悉的话可能会被省去了一些细节。</p>
-<h5 id="基本准备"><a href="#基本准备" class="headerlink" title="基本准备"></a>基本准备</h5><p>下载android studio，我这里用android studio1.3、1.4都试过，<br>新建一个工程，都是默认，确保这个工程能运行。然后看看这个工程文件，目录结构<br>这里写图片描述<br>.gradle、.idea、build、都是运行时产生，删除。重要的是gradle文件夹，gradlew，gradlew.bat，build.gradle，setting.gradle。然后熟悉其他文件是干嘛用的，是否删除或修改取决于你原来的eclipse项目。</p>
-<h5 id="新建文件夹然后copy工作"><a href="#新建文件夹然后copy工作" class="headerlink" title="新建文件夹然后copy工作"></a>新建文件夹然后copy工作</h5><p>新建一个文件夹，按照上面MyApplication的目录结构，copy一份，其中需要从eclipse项目中迁移过来的有src源代码，还有res资源，注意修改主工程build.gradle里面的applicationId。然后用Android Studio打开新建的项目即可。</p>
-<h5 id="如何解决项目依赖"><a href="#如何解决项目依赖" class="headerlink" title="如何解决项目依赖"></a>如何解决项目依赖</h5><p>很多情况下，并不想把原来的project变成一个module，所以有了工程中的module依赖。这里需要手动配置setting.gradle文件，添加</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">include &apos;:projectName&apos;</span><br><span class="line">project(&apos;:projectName&apos;).projectDir = new File(settingsDir, &apos;../projectName/moduleName&apos;)</span><br></pre></td></tr></table></figure>
-<p>然后在主工程的module的build.gradle文件里面添加</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    compile project(&apos;:projectName&apos;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>同步一下，这里就实现了对工程projectName中的module依赖。<br>可以参考：<br><a href="http://www.cnblogs.com/avenwu/p/4299340.html" target="_blank" rel="external">http://www.cnblogs.com/avenwu/p/4299340.html</a></p>
-<h5 id="遇到的一些问题"><a href="#遇到的一些问题" class="headerlink" title="遇到的一些问题"></a>遇到的一些问题</h5><p>1、Android6.0在api 23以上没有了apache的包，也就是没有了HttpClient等网络相关的类，需要使用的可以从以下路径找到，</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">**\android-sdk-windows\platforms\android-23\optional</span><br></pre></td></tr></table></figure>
-<p>copy到工程的libs里面，并在build.gradle里面添加：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">useLibrary &apos;org.apache.http.legacy&apos;</span><br></pre></td></tr></table></figure>
-<p>2、主工程module的build.gradle里面是</p>
-<p>apply plugin: ‘com.android.application’</p>
-<p>依赖工程module的build.gradle里面应该是依赖库的形式</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apply plugin: &apos;com.android.library&apos;</span><br></pre></td></tr></table></figure>
-<p>3、依赖工程里面不需要applicationId。</p>
-<p>4、androidManifest.xml里面的appIication icon冲突可以删除或修改，错误日志：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Error:Execution failed for task &apos;:app:processDebugManifest&apos;.</span><br><span class="line">&gt; Manifest merger failed : Attribute application@icon value=(@drawable/logo) from AndroidManifest.xml:49:9-38</span><br><span class="line"> is also present at</span><br><span class="line"> ...</span><br></pre></td></tr></table></figure>
-<p>5、引用重复的jar包，删除其中一个，错误日志：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Error:Execution failed for task &apos;:app:dexDebug&apos;.</span><br><span class="line">&gt; com.android.ide.common.process.ProcessException: org.gradle.process.internal.ExecException: Process &apos;command &apos;D:\Program Files\Java\jdk1.7.0_80\bin\java.exe&apos;&apos; finished with non-zero exit value 2</span><br></pre></td></tr></table></figure>
-<p>6、错误日志：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Error:Execution failed for task &apos;:app:packageDebug&apos;.</span><br><span class="line">&gt; Duplicate files copied in APK META-INF/LICENSE</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-<p>按照提示，添加：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">android &#123;</span><br><span class="line">    packagingOptions &#123;</span><br><span class="line">        exclude &apos;META-INF/LICENSE&apos;</span><br><span class="line">        exclude &apos;META-INF/DEPENDENCIES&apos;</span><br><span class="line">        exclude &apos;META-INF/NOTICE&apos;</span><br><span class="line">        exclude &apos;META-INF/LICENSE.txt&apos;</span><br><span class="line">        exclude &apos;META-INF/NOTICE.txt&apos;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h5 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h5><p>也就是将标准Android Studio工程里面的gradle相关文件原汁原味的copy到另外一个新建的、具有相同目录结构的文件夹里面，做一些相应的配置修改。打开Android Studio运行。</p>
-<h5 id="为什么使用这种方式？"><a href="#为什么使用这种方式？" class="headerlink" title="为什么使用这种方式？"></a>为什么使用这种方式？</h5><p>网上比较多的教程是eclipse导出gradle项目，生成build.gradle文件，再用android studio导入，我会觉得这个项目有点奇葩，各种ant、gradle构建的东西混杂在一起（对不起，我有代码洁癖），还会因为gradle构建版本的各种问题而运行不起来，而且项目依赖也并不怎么清晰。或许还有更简便的方法，我在瞎折腾了。</p>
-<h5 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h5><p>最后想说明一点，这是其中一种方式，我实践可用，记录下来一方面自己学习温故，另一方面希望能帮到一些人，这个方法或许有不足之处，希望指正。gradle配置方面还有很多，有些没涉及到的可能还需要添加其他的配置代码。</p>
-
-          
+          <h5 id="题外话"><a href="#题外话" class="headerlink" title="题外话"></a>题外话</h5><p>不知道你们公司是不是还停留在eclipse IDE呢，是不是觉得由于项目依赖太麻烦就一直没迁移过去呢。Android Studio 2.0 都发布第三版预览版本了，Google也早已停止了对ADT插件的更新。</p>
+<p>但将老项目迁移过去确实有点麻烦，各种项目依赖、各种gradle build…什么的导致崩溃卡机。我已被虐过千百遍，但依然对它如初恋。我实践了一种方式，下面主要讲一下大体思路，对gradle完全不熟悉的话可能会被省去了一些细节。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/05/23/Eclipse项目迁移到Android Studio的一种方式/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
         
       
     </div>

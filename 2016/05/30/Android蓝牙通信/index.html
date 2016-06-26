@@ -94,7 +94,7 @@
 <meta property="og:site_name" content="lex雷克斯vIp">
 <meta property="og:description" content="近来工作做了很多Android手机对接蓝牙设备的工作，记录一下。
 场景需要对接蓝牙设备，发送或者获取数据，比如蓝牙打印机、蓝牙体脂称、蓝牙电子血压计、蓝牙血糖仪、蓝牙身高尺等等。大致的过程就是手机跟设备互相连接认证，互传数据的过程。当然，对接不同的设备，会有不同的交互流程，同一类设备，针对不同厂商，也需要遵循不同厂商定制的SDK的相关协议。但都离不开蓝牙的核心协议，下面分经典蓝牙2.0以及低功耗蓝">
-<meta property="og:updated_time" content="2016-05-31T16:19:46.000Z">
+<meta property="og:updated_time" content="2016-06-26T04:16:11.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android蓝牙通信">
 <meta name="twitter:description" content="近来工作做了很多Android手机对接蓝牙设备的工作，记录一下。
@@ -278,8 +278,7 @@
       
         <p>近来工作做了很多Android手机对接蓝牙设备的工作，记录一下。</p>
 <h5 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h5><p>需要对接蓝牙设备，发送或者获取数据，比如蓝牙打印机、蓝牙体脂称、蓝牙电子血压计、蓝牙血糖仪、蓝牙身高尺等等。大致的过程就是手机跟设备互相连接认证，互传数据的过程。当然，对接不同的设备，会有不同的交互流程，同一类设备，针对不同厂商，也需要遵循不同厂商定制的SDK的相关协议。但都离不开蓝牙的核心协议，下面分经典蓝牙2.0以及低功耗蓝牙4.0（BLE）。</p>
-<h5 id="经典蓝牙2-0"><a href="#经典蓝牙2-0" class="headerlink" title="经典蓝牙2.0"></a>经典蓝牙2.0</h5><p>比较传统的设备只支持蓝牙2.0，SPP协议、HDP协议<br>过程：扫描，配对，连接，通信</p>
-<p>参考：<a href="http://blog.csdn.net/q610098308/article/details/45248423" target="_blank" rel="external">Android 蓝牙开发基本流程</a></p>
+<h5 id="经典蓝牙2-0"><a href="#经典蓝牙2-0" class="headerlink" title="经典蓝牙2.0"></a>经典蓝牙2.0</h5><p>比较传统的设备只支持蓝牙2.0，SPP协议、HDP协议<br>过程：扫描，配对，连接，通信<br><a id="more"></a><br>参考：<a href="http://blog.csdn.net/q610098308/article/details/45248423" target="_blank" rel="external">Android 蓝牙开发基本流程</a></p>
 <p>1、通用UUID：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">private static final UUID SPP_UUID = UUID.fromString(&quot;00001101-0000-1000-8000-00805F9B34FB&quot;);</span><br></pre></td></tr></table></figure>
 <p>2、配对，反射设置密码（如果需要设置的话）</p>

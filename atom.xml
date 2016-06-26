@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2016-06-26T04:09:42.000Z</updated>
+  <updated>2016-06-26T04:14:21.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,10 +20,10 @@
     <link href="http://yoursite.com/2016/06/25/Android%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%9A%84%E4%BD%BF%E7%94%A8/"/>
     <id>http://yoursite.com/2016/06/25/Android线程池的使用/</id>
     <published>2016-06-25T10:13:54.000Z</published>
-    <updated>2016-06-26T04:09:42.000Z</updated>
+    <updated>2016-06-26T04:14:21.000Z</updated>
     
     <content type="html">&lt;p&gt;Android App的开发中，经常需要用到线程。执行网络操作、进行数据库查找等异步操作。线程池的使用可以更方便的使用线程，记录一下对线程池的一些理解。&lt;/p&gt;
-&lt;h1 id=&quot;1、为什么要用线程池？&quot;&gt;&lt;a href=&quot;#1、为什么要用线程池？&quot; class=&quot;headerlink&quot; title=&quot;1、为什么要用线程池？&quot;&gt;&lt;/a&gt;1、为什么要用线程池？&lt;/h1&gt;&lt;p&gt;线程池有什么优点，在《Android开发艺术探索》这本书上面是这样写的：&lt;br&gt;1.1、重用线程池中的线程，避免因为线程的创建和销毁所带来的性能开销；&lt;br&gt;1.2、能有效控制线程池的最大并发数，避免大量的线程之间因互相抢占系统资源而导致的阻塞现象；&lt;br&gt;1.3、能够对线程进行简单的管理，并提供定时执行以及在指定间隔循环执行等功能。&lt;/p&gt;
+&lt;h1 id=&quot;1、为什么要用线程池？&quot;&gt;&lt;a href=&quot;#1、为什么要用线程池？&quot; class=&quot;headerlink&quot; title=&quot;1、为什么要用线程池？&quot;&gt;&lt;/a&gt;1、为什么要用线程池？&lt;/h1&gt;&lt;p&gt;线程池有什么优点，在《Android开发艺术探索》这本书上面是这样写的：&lt;br&gt;1.1、重用线程池中的线程，避免因为线程的创建和销毁所带来的性能开销；&lt;br&gt;1.2、能有效控制线程池的最大并发数，避免大量的线程之间因互相抢占系统资源而导致的阻塞现象；&lt;br&gt;1.3、能够对线程进行简单的管理，并提供定时执行以及在指定间隔循环执行等功能。&lt;br&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;h1 id=&quot;2、熟悉几个概念&quot;&gt;&lt;a href=&quot;#2、熟悉几个概念&quot; class=&quot;headerlink&quot; title=&quot;2、熟悉几个概念&quot;&gt;&lt;/a&gt;2、熟悉几个概念&lt;/h1&gt;&lt;p&gt;Executor是一个接口，线程池的实现类是ThreadPoolExecutor。ThreadPoolExecutor的构造方法里面的参数：&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;public ThreadPoolExecutor (&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;int corePoolSize, &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;int maxmumPoolSize, &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;long keepAliveTime, &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;TimeUnit unit, &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;BlockingQueue&amp;lt;Runnable runnable&amp;gt; workQueue, &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;ThreadFactory threadFactory)&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
 &lt;h2 id=&quot;2-1、corePoolSize&quot;&gt;&lt;a href=&quot;#2-1、corePoolSize&quot; class=&quot;headerlink&quot; title=&quot;2.1、corePoolSize&quot;&gt;&lt;/a&gt;2.1、corePoolSize&lt;/h2&gt;&lt;p&gt;核心线程数，会在线程池里面一直存活的线程，也就是能够及时快速响应任务的执行。但可以通过设置allowCoreThreadTimeOut设置为闲置等待keepAliveTime而终止。&lt;/p&gt;
 &lt;h2 id=&quot;2-2、maxmumPoolSize&quot;&gt;&lt;a href=&quot;#2-2、maxmumPoolSize&quot; class=&quot;headerlink&quot; title=&quot;2.2、maxmumPoolSize&quot;&gt;&lt;/a&gt;2.2、maxmumPoolSize&lt;/h2&gt;&lt;p&gt;最大线程数，超过最大线程数的任务会被阻塞。&lt;/p&gt;
@@ -41,7 +41,7 @@
     <summary type="html">
     
       &lt;p&gt;Android App的开发中，经常需要用到线程。执行网络操作、进行数据库查找等异步操作。线程池的使用可以更方便的使用线程，记录一下对线程池的一些理解。&lt;/p&gt;
-&lt;h1 id=&quot;1、为什么要用线程池？&quot;&gt;&lt;a href=&quot;#1、为什么要用线程池？&quot; class=&quot;heade
+&lt;h1 id=&quot;1、为什么要用线程池？&quot;&gt;&lt;a href=&quot;#1、为什么要用线程池？&quot; class=&quot;headerlink&quot; title=&quot;1、为什么要用线程池？&quot;&gt;&lt;/a&gt;1、为什么要用线程池？&lt;/h1&gt;&lt;p&gt;线程池有什么优点，在《Android开发艺术探索》这本书上面是这样写的：&lt;br&gt;1.1、重用线程池中的线程，避免因为线程的创建和销毁所带来的性能开销；&lt;br&gt;1.2、能有效控制线程池的最大并发数，避免大量的线程之间因互相抢占系统资源而导致的阻塞现象；&lt;br&gt;1.3、能够对线程进行简单的管理，并提供定时执行以及在指定间隔循环执行等功能。&lt;br&gt;
     
     </summary>
     
@@ -53,10 +53,10 @@
     <link href="http://yoursite.com/2016/06/05/Android%E8%87%AA%E5%AE%9A%E4%B9%89View(%E4%B8%80)/"/>
     <id>http://yoursite.com/2016/06/05/Android自定义View(一)/</id>
     <published>2016-06-05T07:37:09.000Z</published>
-    <updated>2016-06-11T10:36:18.000Z</updated>
+    <updated>2016-06-26T04:15:36.000Z</updated>
     
     <content type="html">&lt;p&gt;关于自定义View，是Android学习的必经之路，个人觉得自定义View更重要的是关于绘图的计算算法，利用Android提供的API结合算法，才能绘制出比较复杂的图形。这次做的是一个时钟的自定义View Demo，熟悉下自定义View的各个步骤。先看下基本效果：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/lextime2013/view/master/show.gif&quot; alt=&quot;image&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/lextime2013/view/master/show.gif&quot; alt=&quot;image&quot;&gt;&lt;br&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;h5 id=&quot;一、实现自定义View流程&quot;&gt;&lt;a href=&quot;#一、实现自定义View流程&quot; class=&quot;headerlink&quot; title=&quot;一、实现自定义View流程&quot;&gt;&lt;/a&gt;一、实现自定义View流程&lt;/h5&gt;&lt;p&gt;onMeasure() -&amp;gt; onSizeChange() -&amp;gt; onLayout() -&amp;gt; onDraw()&lt;/p&gt;
 &lt;p&gt;其中，onLayout()是父View布局子View的时候需要，也就是自定义ViewGroup的时候，这次我们没有使用到。&lt;/p&gt;
 &lt;h6 id=&quot;onMeasure&quot;&gt;&lt;a href=&quot;#onMeasure&quot; class=&quot;headerlink&quot; title=&quot;onMeasure()&quot;&gt;&lt;/a&gt;onMeasure()&lt;/h6&gt;&lt;p&gt;测量View的大小，在Android系统加载布局的时候，系统先测量各个子View的大小，然后通知父View需要多大的空间，父View再根据自身的大小来决定分配多少空间给子View。有三种测量模式：&lt;/p&gt;
@@ -84,7 +84,7 @@
     <summary type="html">
     
       &lt;p&gt;关于自定义View，是Android学习的必经之路，个人觉得自定义View更重要的是关于绘图的计算算法，利用Android提供的API结合算法，才能绘制出比较复杂的图形。这次做的是一个时钟的自定义View Demo，熟悉下自定义View的各个步骤。先看下基本效果：&lt;/p&gt;
-
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/lextime2013/view/master/show.gif&quot; alt=&quot;image&quot;&gt;&lt;br&gt;
     
     </summary>
     
@@ -96,12 +96,11 @@
     <link href="http://yoursite.com/2016/05/30/Android%E8%93%9D%E7%89%99%E9%80%9A%E4%BF%A1/"/>
     <id>http://yoursite.com/2016/05/30/Android蓝牙通信/</id>
     <published>2016-05-30T14:04:37.000Z</published>
-    <updated>2016-05-31T16:19:46.000Z</updated>
+    <updated>2016-06-26T04:16:11.000Z</updated>
     
     <content type="html">&lt;p&gt;近来工作做了很多Android手机对接蓝牙设备的工作，记录一下。&lt;/p&gt;
 &lt;h5 id=&quot;场景&quot;&gt;&lt;a href=&quot;#场景&quot; class=&quot;headerlink&quot; title=&quot;场景&quot;&gt;&lt;/a&gt;场景&lt;/h5&gt;&lt;p&gt;需要对接蓝牙设备，发送或者获取数据，比如蓝牙打印机、蓝牙体脂称、蓝牙电子血压计、蓝牙血糖仪、蓝牙身高尺等等。大致的过程就是手机跟设备互相连接认证，互传数据的过程。当然，对接不同的设备，会有不同的交互流程，同一类设备，针对不同厂商，也需要遵循不同厂商定制的SDK的相关协议。但都离不开蓝牙的核心协议，下面分经典蓝牙2.0以及低功耗蓝牙4.0（BLE）。&lt;/p&gt;
-&lt;h5 id=&quot;经典蓝牙2-0&quot;&gt;&lt;a href=&quot;#经典蓝牙2-0&quot; class=&quot;headerlink&quot; title=&quot;经典蓝牙2.0&quot;&gt;&lt;/a&gt;经典蓝牙2.0&lt;/h5&gt;&lt;p&gt;比较传统的设备只支持蓝牙2.0，SPP协议、HDP协议&lt;br&gt;过程：扫描，配对，连接，通信&lt;/p&gt;
-&lt;p&gt;参考：&lt;a href=&quot;http://blog.csdn.net/q610098308/article/details/45248423&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android 蓝牙开发基本流程&lt;/a&gt;&lt;/p&gt;
+&lt;h5 id=&quot;经典蓝牙2-0&quot;&gt;&lt;a href=&quot;#经典蓝牙2-0&quot; class=&quot;headerlink&quot; title=&quot;经典蓝牙2.0&quot;&gt;&lt;/a&gt;经典蓝牙2.0&lt;/h5&gt;&lt;p&gt;比较传统的设备只支持蓝牙2.0，SPP协议、HDP协议&lt;br&gt;过程：扫描，配对，连接，通信&lt;br&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;br&gt;参考：&lt;a href=&quot;http://blog.csdn.net/q610098308/article/details/45248423&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android 蓝牙开发基本流程&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;1、通用UUID：&lt;/p&gt;
 &lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;private static final UUID SPP_UUID = UUID.fromString(&amp;quot;00001101-0000-1000-8000-00805F9B34FB&amp;quot;);&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;p&gt;2、配对，反射设置密码（如果需要设置的话）&lt;/p&gt;
@@ -133,7 +132,8 @@
     <summary type="html">
     
       &lt;p&gt;近来工作做了很多Android手机对接蓝牙设备的工作，记录一下。&lt;/p&gt;
-&lt;h5 id=&quot;场景&quot;&gt;&lt;a href=&quot;#场景&quot; class=&quot;headerlink&quot; title=&quot;场景&quot;&gt;&lt;/a&gt;场景&lt;/h5&gt;&lt;p&gt;需要对接蓝牙设备，发送或者获取数据，比如蓝牙打印机、蓝牙体脂
+&lt;h5 id=&quot;场景&quot;&gt;&lt;a href=&quot;#场景&quot; class=&quot;headerlink&quot; title=&quot;场景&quot;&gt;&lt;/a&gt;场景&lt;/h5&gt;&lt;p&gt;需要对接蓝牙设备，发送或者获取数据，比如蓝牙打印机、蓝牙体脂称、蓝牙电子血压计、蓝牙血糖仪、蓝牙身高尺等等。大致的过程就是手机跟设备互相连接认证，互传数据的过程。当然，对接不同的设备，会有不同的交互流程，同一类设备，针对不同厂商，也需要遵循不同厂商定制的SDK的相关协议。但都离不开蓝牙的核心协议，下面分经典蓝牙2.0以及低功耗蓝牙4.0（BLE）。&lt;/p&gt;
+&lt;h5 id=&quot;经典蓝牙2-0&quot;&gt;&lt;a href=&quot;#经典蓝牙2-0&quot; class=&quot;headerlink&quot; title=&quot;经典蓝牙2.0&quot;&gt;&lt;/a&gt;经典蓝牙2.0&lt;/h5&gt;&lt;p&gt;比较传统的设备只支持蓝牙2.0，SPP协议、HDP协议&lt;br&gt;过程：扫描，配对，连接，通信&lt;br&gt;
     
     </summary>
     
@@ -145,7 +145,7 @@
     <link href="http://yoursite.com/2016/05/29/%E5%AE%B9%E6%98%93%E7%8A%AF%E9%94%99%E7%9A%84%E7%9F%A5%E8%AF%86%E7%82%B9/"/>
     <id>http://yoursite.com/2016/05/29/容易犯错的知识点/</id>
     <published>2016-05-28T16:27:00.000Z</published>
-    <updated>2016-06-11T15:25:21.000Z</updated>
+    <updated>2016-06-26T04:15:55.000Z</updated>
     
     <content type="html">&lt;h5 id=&quot;JAVA篇&quot;&gt;&lt;a href=&quot;#JAVA篇&quot; class=&quot;headerlink&quot; title=&quot;JAVA篇&quot;&gt;&lt;/a&gt;JAVA篇&lt;/h5&gt;&lt;p&gt;1、强转，(String)msg.obj —&amp;gt; (String)null，可以执行&lt;/p&gt;
 &lt;p&gt;2、遍历，String str : List&lt;string&gt;，如果list是null会崩溃&lt;/string&gt;&lt;/p&gt;
@@ -153,8 +153,7 @@
 &lt;p&gt;4、包装类型，String.valueOf(null); 会崩溃&lt;/p&gt;
 &lt;p&gt;5、从资源文件中获取颜色&lt;br&gt;textView.setTextColor(getResources().getColor(R.color.colorPrimary));&lt;/p&gt;
 &lt;p&gt;6、从资源中获取字体大小&lt;br&gt;textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.text_sp));&lt;/p&gt;
-&lt;p&gt;7、从资源文件中获取size，dp、sp、px —&amp;gt; px，相同的sp、dp会 * density 转换成为相同的px，px会直接得到px&lt;/p&gt;
-&lt;p&gt;getDimensionPixelOffset() // 去除小数部分int&lt;/p&gt;
+&lt;p&gt;7、从资源文件中获取size，dp、sp、px —&amp;gt; px，相同的sp、dp会 * density 转换成为相同的px，px会直接得到px&lt;br&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;br&gt;getDimensionPixelOffset() // 去除小数部分int&lt;/p&gt;
 &lt;p&gt;getDimensionPixelSize() // 获取四舍五入int&lt;/p&gt;
 &lt;p&gt;getDimension() // 获取float&lt;/p&gt;
 </content>
@@ -162,7 +161,12 @@
     <summary type="html">
     
       &lt;h5 id=&quot;JAVA篇&quot;&gt;&lt;a href=&quot;#JAVA篇&quot; class=&quot;headerlink&quot; title=&quot;JAVA篇&quot;&gt;&lt;/a&gt;JAVA篇&lt;/h5&gt;&lt;p&gt;1、强转，(String)msg.obj —&amp;gt; (String)null，可以执行&lt;/p&gt;
-&lt;p&gt;2、遍历，S
+&lt;p&gt;2、遍历，String str : List&lt;String&gt;，如果list是null会崩溃&lt;/p&gt;
+&lt;p&gt;3、集合添加，list.add(null)，可以执行，但list.addAll(null)，会崩溃&lt;/p&gt;
+&lt;p&gt;4、包装类型，String.valueOf(null); 会崩溃&lt;/p&gt;
+&lt;p&gt;5、从资源文件中获取颜色&lt;br&gt;textView.setTextColor(getResources().getColor(R.color.colorPrimary));&lt;/p&gt;
+&lt;p&gt;6、从资源中获取字体大小&lt;br&gt;textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.text_sp));&lt;/p&gt;
+&lt;p&gt;7、从资源文件中获取size，dp、sp、px —&amp;gt; px，相同的sp、dp会 * density 转换成为相同的px，px会直接得到px&lt;br&gt;
     
     </summary>
     
@@ -174,10 +178,10 @@
     <link href="http://yoursite.com/2016/05/23/Eclipse%E9%A1%B9%E7%9B%AE%E8%BF%81%E7%A7%BB%E5%88%B0Android%20Studio%E7%9A%84%E4%B8%80%E7%A7%8D%E6%96%B9%E5%BC%8F/"/>
     <id>http://yoursite.com/2016/05/23/Eclipse项目迁移到Android Studio的一种方式/</id>
     <published>2016-05-23T13:52:23.000Z</published>
-    <updated>2016-05-29T07:13:31.000Z</updated>
+    <updated>2016-06-26T04:16:24.000Z</updated>
     
     <content type="html">&lt;h5 id=&quot;题外话&quot;&gt;&lt;a href=&quot;#题外话&quot; class=&quot;headerlink&quot; title=&quot;题外话&quot;&gt;&lt;/a&gt;题外话&lt;/h5&gt;&lt;p&gt;不知道你们公司是不是还停留在eclipse IDE呢，是不是觉得由于项目依赖太麻烦就一直没迁移过去呢。Android Studio 2.0 都发布第三版预览版本了，Google也早已停止了对ADT插件的更新。&lt;/p&gt;
-&lt;p&gt;但将老项目迁移过去确实有点麻烦，各种项目依赖、各种gradle build…什么的导致崩溃卡机。我已被虐过千百遍，但依然对它如初恋。我实践了一种方式，下面主要讲一下大体思路，对gradle完全不熟悉的话可能会被省去了一些细节。&lt;/p&gt;
+&lt;p&gt;但将老项目迁移过去确实有点麻烦，各种项目依赖、各种gradle build…什么的导致崩溃卡机。我已被虐过千百遍，但依然对它如初恋。我实践了一种方式，下面主要讲一下大体思路，对gradle完全不熟悉的话可能会被省去了一些细节。&lt;br&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;h5 id=&quot;基本准备&quot;&gt;&lt;a href=&quot;#基本准备&quot; class=&quot;headerlink&quot; title=&quot;基本准备&quot;&gt;&lt;/a&gt;基本准备&lt;/h5&gt;&lt;p&gt;下载android studio，我这里用android studio1.3、1.4都试过，&lt;br&gt;新建一个工程，都是默认，确保这个工程能运行。然后看看这个工程文件，目录结构&lt;br&gt;这里写图片描述&lt;br&gt;.gradle、.idea、build、都是运行时产生，删除。重要的是gradle文件夹，gradlew，gradlew.bat，build.gradle，setting.gradle。然后熟悉其他文件是干嘛用的，是否删除或修改取决于你原来的eclipse项目。&lt;/p&gt;
 &lt;h5 id=&quot;新建文件夹然后copy工作&quot;&gt;&lt;a href=&quot;#新建文件夹然后copy工作&quot; class=&quot;headerlink&quot; title=&quot;新建文件夹然后copy工作&quot;&gt;&lt;/a&gt;新建文件夹然后copy工作&lt;/h5&gt;&lt;p&gt;新建一个文件夹，按照上面MyApplication的目录结构，copy一份，其中需要从eclipse项目中迁移过来的有src源代码，还有res资源，注意修改主工程build.gradle里面的applicationId。然后用Android Studio打开新建的项目即可。&lt;/p&gt;
 &lt;h5 id=&quot;如何解决项目依赖&quot;&gt;&lt;a href=&quot;#如何解决项目依赖&quot; class=&quot;headerlink&quot; title=&quot;如何解决项目依赖&quot;&gt;&lt;/a&gt;如何解决项目依赖&lt;/h5&gt;&lt;p&gt;很多情况下，并不想把原来的project变成一个module，所以有了工程中的module依赖。这里需要手动配置setting.gradle文件，添加&lt;/p&gt;
@@ -209,7 +213,8 @@
     
     <summary type="html">
     
-      &lt;h5 id=&quot;题外话&quot;&gt;&lt;a href=&quot;#题外话&quot; class=&quot;headerlink&quot; title=&quot;题外话&quot;&gt;&lt;/a&gt;题外话&lt;/h5&gt;&lt;p&gt;不知道你们公司是不是还停留在eclipse IDE呢，是不是觉得由于项目依赖太麻烦就一直没迁移过去呢。Android Studio 
+      &lt;h5 id=&quot;题外话&quot;&gt;&lt;a href=&quot;#题外话&quot; class=&quot;headerlink&quot; title=&quot;题外话&quot;&gt;&lt;/a&gt;题外话&lt;/h5&gt;&lt;p&gt;不知道你们公司是不是还停留在eclipse IDE呢，是不是觉得由于项目依赖太麻烦就一直没迁移过去呢。Android Studio 2.0 都发布第三版预览版本了，Google也早已停止了对ADT插件的更新。&lt;/p&gt;
+&lt;p&gt;但将老项目迁移过去确实有点麻烦，各种项目依赖、各种gradle build…什么的导致崩溃卡机。我已被虐过千百遍，但依然对它如初恋。我实践了一种方式，下面主要讲一下大体思路，对gradle完全不熟悉的话可能会被省去了一些细节。&lt;br&gt;
     
     </summary>
     

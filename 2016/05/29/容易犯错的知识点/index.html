@@ -100,7 +100,7 @@
 3、集合添加，list.add(null)，可以执行，但list.addAll(null)，会崩溃
 4、包装类型，String.valueOf(null); 会崩溃
 5、从资源文件中获取颜色textView.setTextC">
-<meta property="og:updated_time" content="2016-06-11T15:25:21.000Z">
+<meta property="og:updated_time" content="2016-06-26T04:15:55.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="容易犯错的知识点">
 <meta name="twitter:description" content="JAVA篇1、强转，(String)msg.obj —&amp;gt; (String)null，可以执行
@@ -291,8 +291,7 @@
 <p>4、包装类型，String.valueOf(null); 会崩溃</p>
 <p>5、从资源文件中获取颜色<br>textView.setTextColor(getResources().getColor(R.color.colorPrimary));</p>
 <p>6、从资源中获取字体大小<br>textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.text_sp));</p>
-<p>7、从资源文件中获取size，dp、sp、px —&gt; px，相同的sp、dp会 * density 转换成为相同的px，px会直接得到px</p>
-<p>getDimensionPixelOffset() // 去除小数部分int</p>
+<p>7、从资源文件中获取size，dp、sp、px —&gt; px，相同的sp、dp会 * density 转换成为相同的px，px会直接得到px<br><a id="more"></a><br>getDimensionPixelOffset() // 去除小数部分int</p>
 <p>getDimensionPixelSize() // 获取四舍五入int</p>
 <p>getDimension() // 获取float</p>
 
