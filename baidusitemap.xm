@@ -4,6 +4,21 @@
 
     
   <url>
+    <loc>http://yoursite.com/2016/06/25/Android%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%9A%84%E4%BD%BF%E7%94%A8/</loc>
+    <lastmod>2016-06-26T04:09:42.000Z</lastmod>
+    <data>
+        <display>
+        <title>Android线程池的使用</title>
+        <pubTime>2016-06-25T10:13:54.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://yoursite.com/2016/05/29/%E5%AE%B9%E6%98%93%E7%8A%AF%E9%94%99%E7%9A%84%E7%9F%A5%E8%AF%86%E7%82%B9/</loc>
     <lastmod>2016-06-11T15:25:21.000Z</lastmod>
     <data>
