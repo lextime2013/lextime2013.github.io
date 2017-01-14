@@ -5,7 +5,7 @@
     
   <url>
     <loc>http://yoursite.com/2017/01/14/Android%E5%AE%98%E6%96%B9MVP%E6%9E%B6%E6%9E%84%E5%AD%A6%E4%B9%A0%E5%88%86%E6%9E%90/</loc>
-    <lastmod>2017-01-14T14:18:46.000Z</lastmod>
+    <lastmod>2017-01-14T14:22:35.000Z</lastmod>
     <data>
         <display>
         <title>Android官方MVP架构学习分析</title>
