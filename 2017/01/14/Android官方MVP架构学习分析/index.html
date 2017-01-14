@@ -95,9 +95,9 @@
 <meta property="og:site_name" content="lex雷克斯vIp">
 <meta property="og:description" content="每次看MVC架构的项目时，都会在比较臃肿的Activity、Fragment里面阅读，对一个界面的逻辑理解并不是那么的清晰。当然，Android的MVC架构，很多都不是特别的清晰，因为Activity作为控制器，却做了很多视图的处理，或者把Activity理解成为视图，却拥有着大量的控制器逻辑。MVP架构会在这个MVC基础上锦上添花。虽然会添加很多接口类，但清晰度上面提高了，后面通过泛型应该也可以">
 <meta property="og:image" content="https://raw.githubusercontent.com/lextime2013/lex/gh-pages/images/pic_android_mvp_mine.png">
-<meta property="og:image" content="https://github.com/lextime2013/lex/blob/gh-pages/images/pic_android_mvp_demo.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lextime2013/lex/gh-pages/images/pic_android_mvp_demo.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/lextime2013/lex/gh-pages/images/pic_android_mvp_3.png">
-<meta property="og:updated_time" content="2017-01-14T14:10:40.000Z">
+<meta property="og:updated_time" content="2017-01-14T14:18:46.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android官方MVP架构学习分析">
 <meta name="twitter:description" content="每次看MVC架构的项目时，都会在比较臃肿的Activity、Fragment里面阅读，对一个界面的逻辑理解并不是那么的清晰。当然，Android的MVC架构，很多都不是特别的清晰，因为Activity作为控制器，却做了很多视图的处理，或者把Activity理解成为视图，却拥有着大量的控制器逻辑。MVP架构会在这个MVC基础上锦上添花。虽然会添加很多接口类，但清晰度上面提高了，后面通过泛型应该也可以">
@@ -285,7 +285,7 @@
 <a id="more"></a>
 <p>Activity作为MVP的主控制，初始化Precenter（P）、Fragment（V）、TasksRepository（M），View层响应UI事件，并通过Precenter层去获取数据，Precenter会通过调用Model层去获取内存中缓存的、本地数据库的、网络服务器的数据，最终通过回调方法响应数据到View层显示。</p>
 <p>在看看官网demo的目录结构：</p>
-<p><img src="https://github.com/lextime2013/lex/blob/gh-pages/images/pic_android_mvp_demo.png" alt="image"></p>
+<p><img src="https://raw.githubusercontent.com/lextime2013/lex/gh-pages/images/pic_android_mvp_demo.png" alt="image"></p>
 <p>从契约类Contract可以看出，Precenter跟View层的接口都比较清晰的查看，而Model层则是通过实现TasksDataSource接口，达到数据获取、网络数据获取、本地数据获取，都是实现相同的接口。因此三者具体的交互应该是这样的<br><img src="https://raw.githubusercontent.com/lextime2013/lex/gh-pages/images/pic_android_mvp_3.png" alt="image"></p>
 
       
