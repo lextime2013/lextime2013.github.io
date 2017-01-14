@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-01-08T07:47:22.000Z</updated>
+  <updated>2017-01-14T13:55:34.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -14,6 +14,32 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Android官方MVP架构学习分析</title>
+    <link href="http://yoursite.com/2017/01/14/Android%E5%AE%98%E6%96%B9MVP%E6%9E%B6%E6%9E%84%E5%AD%A6%E4%B9%A0%E5%88%86%E6%9E%90/"/>
+    <id>http://yoursite.com/2017/01/14/Android官方MVP架构学习分析/</id>
+    <published>2017-01-14T13:37:00.000Z</published>
+    <updated>2017-01-14T13:55:34.000Z</updated>
+    
+    <content type="html">&lt;p&gt;每次看MVC架构的项目时，都会在比较臃肿的Activity、Fragment里面阅读，对一个界面的逻辑理解并不是那么的清晰。当然，Android的MVC架构，很多都不是特别的清晰，因为Activity作为控制器，却做了很多视图的处理，或者把Activity理解成为视图，却拥有着大量的控制器逻辑。MVP架构会在这个MVC基础上锦上添花。虽然会添加很多接口类，但清晰度上面提高了，后面通过泛型应该也可以简约更多的代码。&lt;/p&gt;
+&lt;p&gt;Android官方MVP架构:&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;https://github.com/googlesamples/android-architecture&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;学习后分析了一下，先上图&lt;br&gt;&lt;img src=&quot;https://github.com/lextime2013/lex/blob/gh-pages/images/pic_android_mvp_mine.png&quot; alt=&quot;image&quot;&gt;&lt;/p&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;p&gt;Activity作为MVP的主控制，初始化Precenter（P）、Fragment（V）、TasksRepository（M），View层响应UI事件，并通过Precenter层去获取数据，Precenter会通过调用Model层去获取内存中缓存的、本地数据库的、网络服务器的数据，最终通过回调方法响应数据到View层显示。&lt;/p&gt;
+&lt;p&gt;从契约类Contract可以看出，Precenter跟View层的接口都比较清晰的查看，而Model层则是通过实现TasksDataSource接口，达到数据获取、网络数据获取、本地数据获取，都是实现相同的接口。因此三者具体的交互应该是这样的&lt;br&gt;&lt;img src=&quot;https://github.com/lextime2013/lex/blob/gh-pages/images/pic_android_mvp_3.png&quot; alt=&quot;image&quot;&gt;&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;每次看MVC架构的项目时，都会在比较臃肿的Activity、Fragment里面阅读，对一个界面的逻辑理解并不是那么的清晰。当然，Android的MVC架构，很多都不是特别的清晰，因为Activity作为控制器，却做了很多视图的处理，或者把Activity理解成为视图，却拥有着大量的控制器逻辑。MVP架构会在这个MVC基础上锦上添花。虽然会添加很多接口类，但清晰度上面提高了，后面通过泛型应该也可以简约更多的代码。&lt;/p&gt;
+&lt;p&gt;Android官方MVP架构:&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;https://github.com/googlesamples/android-architecture&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;学习后分析了一下，先上图&lt;br&gt;&lt;img src=&quot;https://github.com/lextime2013/lex/blob/gh-pages/images/pic_android_mvp_mine.png&quot; alt=&quot;image&quot;&gt;&lt;/p&gt;
+    
+    </summary>
+    
+    
+  </entry>
   
   <entry>
     <title>《小钱狗狗》语录</title>

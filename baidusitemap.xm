@@ -4,6 +4,21 @@
 
     
   <url>
+    <loc>http://yoursite.com/2017/01/14/Android%E5%AE%98%E6%96%B9MVP%E6%9E%B6%E6%9E%84%E5%AD%A6%E4%B9%A0%E5%88%86%E6%9E%90/</loc>
+    <lastmod>2017-01-14T13:55:34.000Z</lastmod>
+    <data>
+        <display>
+        <title>Android官方MVP架构学习分析</title>
+        <pubTime>2017-01-14T13:37:00.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://yoursite.com/2017/01/08/%E3%80%8A%E5%B0%8F%E9%92%B1%E7%8B%97%E7%8B%97%E3%80%8B%E8%AF%AD%E5%BD%95/</loc>
     <lastmod>2017-01-08T07:47:22.000Z</lastmod>
     <data>
