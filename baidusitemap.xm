@@ -5,7 +5,7 @@
     
   <url>
     <loc>http://yoursite.com/2017/04/03/Retrofit%E6%B5%85%E6%9E%90/</loc>
-    <lastmod>2017-04-03T09:30:12.000Z</lastmod>
+    <lastmod>2017-04-03T09:32:00.000Z</lastmod>
     <data>
         <display>
         <title>Retrofit浅析</title>
