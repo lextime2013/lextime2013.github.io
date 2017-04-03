@@ -4,6 +4,21 @@
 
     
   <url>
+    <loc>http://yoursite.com/2017/04/03/Retrofit%E6%B5%85%E6%9E%90/</loc>
+    <lastmod>2017-04-03T09:24:39.000Z</lastmod>
+    <data>
+        <display>
+        <title>Retrofit浅析</title>
+        <pubTime>2017-04-03T08:27:33.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://yoursite.com/2016/05/23/Eclipse%E9%A1%B9%E7%9B%AE%E8%BF%81%E7%A7%BB%E5%88%B0Android%20Studio%E7%9A%84%E4%B8%80%E7%A7%8D%E6%96%B9%E5%BC%8F/</loc>
     <lastmod>2017-02-05T11:49:46.000Z</lastmod>
     <data>
