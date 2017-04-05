@@ -96,13 +96,13 @@
 <meta property="og:site_name" content="lex雷克斯vIp">
 <meta property="og:description" content="一、认识SQLiteSQLite，是一款小型的关系型数据库，在Android、iOS等嵌入式操作系统中使用，内存消耗小，处理速度也比较快，适合手机这种移动设备上使用。是属于内嵌式的数据库，数据库服务器、客户端都运行在同一个进程里面，无需网络配置、管理等操作。
 数据库平时用的比较多的都是数据库升级、增删改查等等，简单的使用都不会存在什么问题，业务复杂了以后，就开始出现效率慢、多线程并发等问题，在开发">
-<meta property="og:image" content="https://raw.githubusercontent.com/lextime2013/lex/gh-pages/images/pic_blog_20170405_sqlite_1.png">
-<meta property="og:updated_time" content="2017-04-05T13:47:52.000Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/lextime2013/lex/gh-pages/images/pic_blog_20170405_sqlite_2.png">
+<meta property="og:updated_time" content="2017-04-05T14:01:01.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SQLite实践总结">
 <meta name="twitter:description" content="一、认识SQLiteSQLite，是一款小型的关系型数据库，在Android、iOS等嵌入式操作系统中使用，内存消耗小，处理速度也比较快，适合手机这种移动设备上使用。是属于内嵌式的数据库，数据库服务器、客户端都运行在同一个进程里面，无需网络配置、管理等操作。
 数据库平时用的比较多的都是数据库升级、增删改查等等，简单的使用都不会存在什么问题，业务复杂了以后，就开始出现效率慢、多线程并发等问题，在开发">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/lextime2013/lex/gh-pages/images/pic_blog_20170405_sqlite_1.png">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/lextime2013/lex/gh-pages/images/pic_blog_20170405_sqlite_2.png">
 
 
 
@@ -288,7 +288,7 @@
 <p>③ 关闭数据库文件、同步结束、关闭事务。</p>
 <p>但开启了事务之后，①跟③都只执行一次，所有插入、更新操作统一都在②执行，因此在速度上比较有优势。</p>
 <p>插入5000条数据执行流程如下图</p>
-<p><img src="https://raw.githubusercontent.com/lextime2013/lex/gh-pages/images/pic_blog_20170405_sqlite_1.png" alt="image"></p>
+<p><img src="https://raw.githubusercontent.com/lextime2013/lex/gh-pages/images/pic_blog_20170405_sqlite_2.png" alt="image"></p>
 <a id="more"></a>
 <p>如图所示，频繁的打开、关闭数据库是很消耗时间和资源的，开启事务之后，时间上比未开启事务要缩短t1 <em> 5000 + t3 </em> 5000，另外CPU、内存消耗也会相应的减少，可见效率上明显提高了。</p>
 <p>开启事务，具有更多其他的优势。例如原子性，一次性提交多个操作，要么全部成功，要么全部失败，失败后会进行回滚到修改之前的状态，避免了脏数据入库的问题。</p>

@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-04-05T13:47:52.000Z</updated>
+  <updated>2017-04-05T14:01:01.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://yoursite.com/2017/04/05/SQLite%E5%AE%9E%E8%B7%B5%E6%80%BB%E7%BB%93/"/>
     <id>http://yoursite.com/2017/04/05/SQLite实践总结/</id>
     <published>2017-04-05T13:46:40.000Z</published>
-    <updated>2017-04-05T13:47:52.000Z</updated>
+    <updated>2017-04-05T14:01:01.000Z</updated>
     
     <content type="html">&lt;h2 id=&quot;一、认识SQLite&quot;&gt;&lt;a href=&quot;#一、认识SQLite&quot; class=&quot;headerlink&quot; title=&quot;一、认识SQLite&quot;&gt;&lt;/a&gt;一、认识SQLite&lt;/h2&gt;&lt;p&gt;SQLite，是一款小型的关系型数据库，在Android、iOS等嵌入式操作系统中使用，内存消耗小，处理速度也比较快，适合手机这种移动设备上使用。是属于内嵌式的数据库，数据库服务器、客户端都运行在同一个进程里面，无需网络配置、管理等操作。&lt;/p&gt;
 &lt;p&gt;数据库平时用的比较多的都是数据库升级、增删改查等等，简单的使用都不会存在什么问题，业务复杂了以后，就开始出现效率慢、多线程并发等问题，在开发阶段也踩过一些坑，总结一下经验。&lt;/p&gt;
@@ -30,7 +30,7 @@
 &lt;p&gt;③ 关闭数据库文件、同步结束、关闭事务。&lt;/p&gt;
 &lt;p&gt;但开启了事务之后，①跟③都只执行一次，所有插入、更新操作统一都在②执行，因此在速度上比较有优势。&lt;/p&gt;
 &lt;p&gt;插入5000条数据执行流程如下图&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/lextime2013/lex/gh-pages/images/pic_blog_20170405_sqlite_1.png&quot; alt=&quot;image&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/lextime2013/lex/gh-pages/images/pic_blog_20170405_sqlite_2.png&quot; alt=&quot;image&quot;&gt;&lt;/p&gt;
 &lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
 &lt;p&gt;如图所示，频繁的打开、关闭数据库是很消耗时间和资源的，开启事务之后，时间上比未开启事务要缩短t1 &lt;em&gt; 5000 + t3 &lt;/em&gt; 5000，另外CPU、内存消耗也会相应的减少，可见效率上明显提高了。&lt;/p&gt;
 &lt;p&gt;开启事务，具有更多其他的优势。例如原子性，一次性提交多个操作，要么全部成功，要么全部失败，失败后会进行回滚到修改之前的状态，避免了脏数据入库的问题。&lt;/p&gt;
@@ -57,7 +57,7 @@
 &lt;p&gt;③ 关闭数据库文件、同步结束、关闭事务。&lt;/p&gt;
 &lt;p&gt;但开启了事务之后，①跟③都只执行一次，所有插入、更新操作统一都在②执行，因此在速度上比较有优势。&lt;/p&gt;
 &lt;p&gt;插入5000条数据执行流程如下图&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/lextime2013/lex/gh-pages/images/pic_blog_20170405_sqlite_1.png&quot; alt=&quot;image&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/lextime2013/lex/gh-pages/images/pic_blog_20170405_sqlite_2.png&quot; alt=&quot;image&quot;&gt;&lt;/p&gt;
     
     </summary>
     
