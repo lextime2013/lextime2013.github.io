@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-04-03T09:33:23.000Z</updated>
+  <updated>2017-04-05T13:47:52.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -14,6 +14,55 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>SQLite实践总结</title>
+    <link href="http://yoursite.com/2017/04/05/SQLite%E5%AE%9E%E8%B7%B5%E6%80%BB%E7%BB%93/"/>
+    <id>http://yoursite.com/2017/04/05/SQLite实践总结/</id>
+    <published>2017-04-05T13:46:40.000Z</published>
+    <updated>2017-04-05T13:47:52.000Z</updated>
+    
+    <content type="html">&lt;h2 id=&quot;一、认识SQLite&quot;&gt;&lt;a href=&quot;#一、认识SQLite&quot; class=&quot;headerlink&quot; title=&quot;一、认识SQLite&quot;&gt;&lt;/a&gt;一、认识SQLite&lt;/h2&gt;&lt;p&gt;SQLite，是一款小型的关系型数据库，在Android、iOS等嵌入式操作系统中使用，内存消耗小，处理速度也比较快，适合手机这种移动设备上使用。是属于内嵌式的数据库，数据库服务器、客户端都运行在同一个进程里面，无需网络配置、管理等操作。&lt;/p&gt;
+&lt;p&gt;数据库平时用的比较多的都是数据库升级、增删改查等等，简单的使用都不会存在什么问题，业务复杂了以后，就开始出现效率慢、多线程并发等问题，在开发阶段也踩过一些坑，总结一下经验。&lt;/p&gt;
+&lt;h2 id=&quot;二、启动事务&quot;&gt;&lt;a href=&quot;#二、启动事务&quot; class=&quot;headerlink&quot; title=&quot;二、启动事务&quot;&gt;&lt;/a&gt;二、启动事务&lt;/h2&gt;&lt;p&gt;首先了解一下SQLite的操作原理，本身对SQLite的操作就是对文件的读写操作，SQLite是属于文件及别的锁，而且，SQLite默认会为每次的插入、更新操作，都会创建一次事务，完成之后立即提交。整个流程分三个步骤。&lt;/p&gt;
+&lt;p&gt;① 开启事务、同步数据库文件、打开数据库文件；&lt;/p&gt;
+&lt;p&gt;② 执行数据库插入、更新等操作；&lt;/p&gt;
+&lt;p&gt;③ 关闭数据库文件、同步结束、关闭事务。&lt;/p&gt;
+&lt;p&gt;但开启了事务之后，①跟③都只执行一次，所有插入、更新操作统一都在②执行，因此在速度上比较有优势。&lt;/p&gt;
+&lt;p&gt;插入5000条数据执行流程如下图&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/lextime2013/lex/gh-pages/images/pic_blog_20170405_sqlite_1.png&quot; alt=&quot;image&quot;&gt;&lt;/p&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;p&gt;如图所示，频繁的打开、关闭数据库是很消耗时间和资源的，开启事务之后，时间上比未开启事务要缩短t1 &lt;em&gt; 5000 + t3 &lt;/em&gt; 5000，另外CPU、内存消耗也会相应的减少，可见效率上明显提高了。&lt;/p&gt;
+&lt;p&gt;开启事务，具有更多其他的优势。例如原子性，一次性提交多个操作，要么全部成功，要么全部失败，失败后会进行回滚到修改之前的状态，避免了脏数据入库的问题。&lt;/p&gt;
+&lt;h2 id=&quot;三、多线程并发&quot;&gt;&lt;a href=&quot;#三、多线程并发&quot; class=&quot;headerlink&quot; title=&quot;三、多线程并发&quot;&gt;&lt;/a&gt;三、多线程并发&lt;/h2&gt;&lt;p&gt;随着业务的发展，复杂的业务不可避免的会出现多线程并发的问题，SQLite是文件级别的锁，从而实现了库级锁，粒度大，支持多线程同时读，但只支持一个线程写，因此在多线程插入、更新操作的时候，往往会出现问题&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;The database file is locked , database is locked&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;这是发生了并发操作的错误，如何避免这个问题，需要做到同一时刻只允许一个线程执行插入、更新操作。&lt;/p&gt;
+&lt;p&gt;1、可以显式使用代码同步synchronized的方式限制单线程执行；&lt;/p&gt;
+&lt;p&gt;2、每个线程显式采用前面说的事务操作，因为事务本身也会执行同步数据库文件；&lt;/p&gt;
+&lt;p&gt;3、使用单线程池的方式，所有数据库任务交由一个单线程池执行，通过Handler返回数据在UI线程展示，既不会影响UI线程，也可以防止并发带来的异常。&lt;/p&gt;
+&lt;h2 id=&quot;四、查询优化&quot;&gt;&lt;a href=&quot;#四、查询优化&quot; class=&quot;headerlink&quot; title=&quot;四、查询优化&quot;&gt;&lt;/a&gt;四、查询优化&lt;/h2&gt;&lt;p&gt;1、异步执行，数据库操作在非UI线程执行，这个应该比较好理解；&lt;/p&gt;
+&lt;p&gt;2、按需获取数据列，可以使用select name from table，就不需要使用select * from table；&lt;/p&gt;
+&lt;p&gt;3、及时关闭cursor、db，查询完毕之后要及时关闭cursor、db，及时释放资源；&lt;/p&gt;
+&lt;p&gt;4、编译SQL，使用同一条SQL语句进行插入、更新的批量操作时，可以预先将SQL语句显式编译成SQLiteStatement以重复利用；&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;private void insertWithPreCompiledStatement(SQLiteDatabase db) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    String sql = &amp;quot;INSERT INTO &amp;quot; + TableDefine.TABLE_RECORD + &amp;quot;( &amp;quot; + TableDefine.COLUMN_INSERT_TIME + &amp;quot;) VALUES(?)&amp;quot;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    SQLiteStatement statement = db.compileStatement(sql);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    int count = 0;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    while (count &amp;lt; 100) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        count++;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        statement.clearBindings();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        statement.bindLong(1, System.currentTimeMillis());&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        statement.executeInsert();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;5、建立索引，查询数据不用全表扫描，从而大大提高数据库查询效率。但索引会导致插入、更新等操作变慢，维护索引也需要消耗资源，我在实践中比较少利用。&lt;/p&gt;
+&lt;h2 id=&quot;五、结语&quot;&gt;&lt;a href=&quot;#五、结语&quot; class=&quot;headerlink&quot; title=&quot;五、结语&quot;&gt;&lt;/a&gt;五、结语&lt;/h2&gt;&lt;p&gt;在APP业务发展得比较复杂的时候，SQLite的优化显得尤其重要，特别是针对一些需要做本地离线数据、服务器同步等业务的场景。另外，移动端开发的同学也应该多学习SQL语句的使用，在一些数据库连接查询比较多场景，使用数据库框架如ormlite难以实现的时候，再去学习如何拼SQL就显得非常吃力了。又比如，GROUP BY 和 ORDER BY一起使用时，ORDER BY要在GROUP BY的后面这种细节也容易忽视。多积累，走更长的路。&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;一、认识SQLite&quot;&gt;&lt;a href=&quot;#一、认识SQLite&quot; class=&quot;headerlink&quot; title=&quot;一、认识SQLite&quot;&gt;&lt;/a&gt;一、认识SQLite&lt;/h2&gt;&lt;p&gt;SQLite，是一款小型的关系型数据库，在Android、iOS等嵌入式操作系统中使用，内存消耗小，处理速度也比较快，适合手机这种移动设备上使用。是属于内嵌式的数据库，数据库服务器、客户端都运行在同一个进程里面，无需网络配置、管理等操作。&lt;/p&gt;
+&lt;p&gt;数据库平时用的比较多的都是数据库升级、增删改查等等，简单的使用都不会存在什么问题，业务复杂了以后，就开始出现效率慢、多线程并发等问题，在开发阶段也踩过一些坑，总结一下经验。&lt;/p&gt;
+&lt;h2 id=&quot;二、启动事务&quot;&gt;&lt;a href=&quot;#二、启动事务&quot; class=&quot;headerlink&quot; title=&quot;二、启动事务&quot;&gt;&lt;/a&gt;二、启动事务&lt;/h2&gt;&lt;p&gt;首先了解一下SQLite的操作原理，本身对SQLite的操作就是对文件的读写操作，SQLite是属于文件及别的锁，而且，SQLite默认会为每次的插入、更新操作，都会创建一次事务，完成之后立即提交。整个流程分三个步骤。&lt;/p&gt;
+&lt;p&gt;① 开启事务、同步数据库文件、打开数据库文件；&lt;/p&gt;
+&lt;p&gt;② 执行数据库插入、更新等操作；&lt;/p&gt;
+&lt;p&gt;③ 关闭数据库文件、同步结束、关闭事务。&lt;/p&gt;
+&lt;p&gt;但开启了事务之后，①跟③都只执行一次，所有插入、更新操作统一都在②执行，因此在速度上比较有优势。&lt;/p&gt;
+&lt;p&gt;插入5000条数据执行流程如下图&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/lextime2013/lex/gh-pages/images/pic_blog_20170405_sqlite_1.png&quot; alt=&quot;image&quot;&gt;&lt;/p&gt;
+    
+    </summary>
+    
+    
+  </entry>
   
   <entry>
     <title>Retrofit浅析</title>

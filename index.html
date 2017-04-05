@@ -235,6 +235,110 @@
             
               
                 
+                <a class="post-title-link" href="/2017/04/05/SQLite实践总结/" itemprop="url">
+                  SQLite实践总结
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-04-05T21:46:40+08:00" content="2017-04-05">
+              2017-04-05
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="一、认识SQLite"><a href="#一、认识SQLite" class="headerlink" title="一、认识SQLite"></a>一、认识SQLite</h2><p>SQLite，是一款小型的关系型数据库，在Android、iOS等嵌入式操作系统中使用，内存消耗小，处理速度也比较快，适合手机这种移动设备上使用。是属于内嵌式的数据库，数据库服务器、客户端都运行在同一个进程里面，无需网络配置、管理等操作。</p>
+<p>数据库平时用的比较多的都是数据库升级、增删改查等等，简单的使用都不会存在什么问题，业务复杂了以后，就开始出现效率慢、多线程并发等问题，在开发阶段也踩过一些坑，总结一下经验。</p>
+<h2 id="二、启动事务"><a href="#二、启动事务" class="headerlink" title="二、启动事务"></a>二、启动事务</h2><p>首先了解一下SQLite的操作原理，本身对SQLite的操作就是对文件的读写操作，SQLite是属于文件及别的锁，而且，SQLite默认会为每次的插入、更新操作，都会创建一次事务，完成之后立即提交。整个流程分三个步骤。</p>
+<p>① 开启事务、同步数据库文件、打开数据库文件；</p>
+<p>② 执行数据库插入、更新等操作；</p>
+<p>③ 关闭数据库文件、同步结束、关闭事务。</p>
+<p>但开启了事务之后，①跟③都只执行一次，所有插入、更新操作统一都在②执行，因此在速度上比较有优势。</p>
+<p>插入5000条数据执行流程如下图</p>
+<p><img src="https://raw.githubusercontent.com/lextime2013/lex/gh-pages/images/pic_blog_20170405_sqlite_1.png" alt="image"></p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/04/05/SQLite实践总结/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2017/04/03/Retrofit浅析/" itemprop="url">
                   Retrofit浅析
                 </a>
@@ -1167,7 +1271,7 @@ var duoshuoQuery = {short_name:"lextime2013"};
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">9</span>
+              <span class="site-state-item-count">10</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

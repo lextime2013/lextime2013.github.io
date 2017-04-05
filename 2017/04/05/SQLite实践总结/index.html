@@ -1,0 +1,591 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+  
+
+
+  <link rel="alternate" href="/atom.xml" title="lex雷克斯vIp" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="一、认识SQLiteSQLite，是一款小型的关系型数据库，在Android、iOS等嵌入式操作系统中使用，内存消耗小，处理速度也比较快，适合手机这种移动设备上使用。是属于内嵌式的数据库，数据库服务器、客户端都运行在同一个进程里面，无需网络配置、管理等操作。
+数据库平时用的比较多的都是数据库升级、增删改查等等，简单的使用都不会存在什么问题，业务复杂了以后，就开始出现效率慢、多线程并发等问题，在开发">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SQLite实践总结">
+<meta property="og:url" content="http://yoursite.com/2017/04/05/SQLite实践总结/index.html">
+<meta property="og:site_name" content="lex雷克斯vIp">
+<meta property="og:description" content="一、认识SQLiteSQLite，是一款小型的关系型数据库，在Android、iOS等嵌入式操作系统中使用，内存消耗小，处理速度也比较快，适合手机这种移动设备上使用。是属于内嵌式的数据库，数据库服务器、客户端都运行在同一个进程里面，无需网络配置、管理等操作。
+数据库平时用的比较多的都是数据库升级、增删改查等等，简单的使用都不会存在什么问题，业务复杂了以后，就开始出现效率慢、多线程并发等问题，在开发">
+<meta property="og:image" content="https://raw.githubusercontent.com/lextime2013/lex/gh-pages/images/pic_blog_20170405_sqlite_1.png">
+<meta property="og:updated_time" content="2017-04-05T13:47:52.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SQLite实践总结">
+<meta name="twitter:description" content="一、认识SQLiteSQLite，是一款小型的关系型数据库，在Android、iOS等嵌入式操作系统中使用，内存消耗小，处理速度也比较快，适合手机这种移动设备上使用。是属于内嵌式的数据库，数据库服务器、客户端都运行在同一个进程里面，无需网络配置、管理等操作。
+数据库平时用的比较多的都是数据库升级、增删改查等等，简单的使用都不会存在什么问题，业务复杂了以后，就开始出现效率慢、多线程并发等问题，在开发">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/lextime2013/lex/gh-pages/images/pic_blog_20170405_sqlite_1.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> SQLite实践总结 | lex雷克斯vIp </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">lex雷克斯vIp</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">我的世界我的梦</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                SQLite实践总结
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-04-05T21:46:40+08:00" content="2017-04-05">
+              2017-04-05
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="一、认识SQLite"><a href="#一、认识SQLite" class="headerlink" title="一、认识SQLite"></a>一、认识SQLite</h2><p>SQLite，是一款小型的关系型数据库，在Android、iOS等嵌入式操作系统中使用，内存消耗小，处理速度也比较快，适合手机这种移动设备上使用。是属于内嵌式的数据库，数据库服务器、客户端都运行在同一个进程里面，无需网络配置、管理等操作。</p>
+<p>数据库平时用的比较多的都是数据库升级、增删改查等等，简单的使用都不会存在什么问题，业务复杂了以后，就开始出现效率慢、多线程并发等问题，在开发阶段也踩过一些坑，总结一下经验。</p>
+<h2 id="二、启动事务"><a href="#二、启动事务" class="headerlink" title="二、启动事务"></a>二、启动事务</h2><p>首先了解一下SQLite的操作原理，本身对SQLite的操作就是对文件的读写操作，SQLite是属于文件及别的锁，而且，SQLite默认会为每次的插入、更新操作，都会创建一次事务，完成之后立即提交。整个流程分三个步骤。</p>
+<p>① 开启事务、同步数据库文件、打开数据库文件；</p>
+<p>② 执行数据库插入、更新等操作；</p>
+<p>③ 关闭数据库文件、同步结束、关闭事务。</p>
+<p>但开启了事务之后，①跟③都只执行一次，所有插入、更新操作统一都在②执行，因此在速度上比较有优势。</p>
+<p>插入5000条数据执行流程如下图</p>
+<p><img src="https://raw.githubusercontent.com/lextime2013/lex/gh-pages/images/pic_blog_20170405_sqlite_1.png" alt="image"></p>
+<a id="more"></a>
+<p>如图所示，频繁的打开、关闭数据库是很消耗时间和资源的，开启事务之后，时间上比未开启事务要缩短t1 <em> 5000 + t3 </em> 5000，另外CPU、内存消耗也会相应的减少，可见效率上明显提高了。</p>
+<p>开启事务，具有更多其他的优势。例如原子性，一次性提交多个操作，要么全部成功，要么全部失败，失败后会进行回滚到修改之前的状态，避免了脏数据入库的问题。</p>
+<h2 id="三、多线程并发"><a href="#三、多线程并发" class="headerlink" title="三、多线程并发"></a>三、多线程并发</h2><p>随着业务的发展，复杂的业务不可避免的会出现多线程并发的问题，SQLite是文件级别的锁，从而实现了库级锁，粒度大，支持多线程同时读，但只支持一个线程写，因此在多线程插入、更新操作的时候，往往会出现问题<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">The database file is locked , database is locked</span><br></pre></td></tr></table></figure></p>
+<p>这是发生了并发操作的错误，如何避免这个问题，需要做到同一时刻只允许一个线程执行插入、更新操作。</p>
+<p>1、可以显式使用代码同步synchronized的方式限制单线程执行；</p>
+<p>2、每个线程显式采用前面说的事务操作，因为事务本身也会执行同步数据库文件；</p>
+<p>3、使用单线程池的方式，所有数据库任务交由一个单线程池执行，通过Handler返回数据在UI线程展示，既不会影响UI线程，也可以防止并发带来的异常。</p>
+<h2 id="四、查询优化"><a href="#四、查询优化" class="headerlink" title="四、查询优化"></a>四、查询优化</h2><p>1、异步执行，数据库操作在非UI线程执行，这个应该比较好理解；</p>
+<p>2、按需获取数据列，可以使用select name from table，就不需要使用select * from table；</p>
+<p>3、及时关闭cursor、db，查询完毕之后要及时关闭cursor、db，及时释放资源；</p>
+<p>4、编译SQL，使用同一条SQL语句进行插入、更新的批量操作时，可以预先将SQL语句显式编译成SQLiteStatement以重复利用；<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">private void insertWithPreCompiledStatement(SQLiteDatabase db) &#123;</span><br><span class="line">    String sql = &quot;INSERT INTO &quot; + TableDefine.TABLE_RECORD + &quot;( &quot; + TableDefine.COLUMN_INSERT_TIME + &quot;) VALUES(?)&quot;;</span><br><span class="line">    SQLiteStatement statement = db.compileStatement(sql);</span><br><span class="line">    int count = 0;</span><br><span class="line">    while (count &lt; 100) &#123;</span><br><span class="line">        count++;</span><br><span class="line">        statement.clearBindings();</span><br><span class="line">        statement.bindLong(1, System.currentTimeMillis());</span><br><span class="line">        statement.executeInsert();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>5、建立索引，查询数据不用全表扫描，从而大大提高数据库查询效率。但索引会导致插入、更新等操作变慢，维护索引也需要消耗资源，我在实践中比较少利用。</p>
+<h2 id="五、结语"><a href="#五、结语" class="headerlink" title="五、结语"></a>五、结语</h2><p>在APP业务发展得比较复杂的时候，SQLite的优化显得尤其重要，特别是针对一些需要做本地离线数据、服务器同步等业务的场景。另外，移动端开发的同学也应该多学习SQL语句的使用，在一些数据库连接查询比较多场景，使用数据库框架如ormlite难以实现的时候，再去学习如何拼SQL就显得非常吃力了。又比如，GROUP BY 和 ORDER BY一起使用时，ORDER BY要在GROUP BY的后面这种细节也容易忽视。多积累，走更长的路。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/04/03/Retrofit浅析/" rel="next" title="Retrofit浅析">
+                <i class="fa fa-chevron-left"></i> Retrofit浅析
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          <!-- 多说评论框 start -->
+<div class="ds-thread" data-thread-key="2017/04/05/SQLite实践总结/"
+           data-title="SQLite实践总结" data-url="http://yoursite.com/2017/04/05/SQLite实践总结/">
+      </div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"lextime2013"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- 多说公共JS代码 end -->
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="lextime2013" />
+          <p class="site-author-name" itemprop="name">lextime2013</p>
+          <p class="site-description motion-element" itemprop="description">想要生存  就一定要疯狂</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">10</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、认识SQLite"><span class="nav-number">1.</span> <span class="nav-text">一、认识SQLite</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、启动事务"><span class="nav-number">2.</span> <span class="nav-text">二、启动事务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、多线程并发"><span class="nav-number">3.</span> <span class="nav-text">三、多线程并发</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、查询优化"><span class="nav-number">4.</span> <span class="nav-text">四、查询优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五、结语"><span class="nav-number">5.</span> <span class="nav-text">五、结语</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lextime2013</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>
