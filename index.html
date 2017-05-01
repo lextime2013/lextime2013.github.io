@@ -235,6 +235,126 @@
             
               
                 
+                <a class="post-title-link" href="/2017/05/01/Android混淆打包实战/" itemprop="url">
+                  Android混淆打包实战
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-05-01T22:10:23+08:00" content="2017-05-01">
+              2017-05-01
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="1、对第三方类库的混淆方法"><a href="#1、对第三方类库的混淆方法" class="headerlink" title="1、对第三方类库的混淆方法"></a>1、对第三方类库的混淆方法</h2><p>项目代码一直使用加固的方案，从而忽略了混淆相关的问题，好多个大大小小的版本迭代之后，再使用一条命令打包<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gradle assembleRelease</span><br></pre></td></tr></table></figure></p>
+<p>然后就出现好几百个警告、错误提示，无法入手，一开始就是看着哪些类库有问题就无脑的使用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-keep class com.xx.** &#123; *; &#125;</span><br></pre></td></tr></table></figure></p>
+<p>然而很多都没作用，挺打击的，然后开始好好的分析一下日志，发现主要有以下几类混淆出错的问题</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Warning: library class android.webkit.WebView depends on program class android.net.http.SslCertificate</span><br><span class="line">Warning: okio.Okio: can&apos;t find referenced class org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement</span><br><span class="line">Note: the configuration refers to the unknown class &apos;fqcn.of.javascript.interface.for.webview&apos;</span><br><span class="line">Note: com.alibaba.wireless.security.framework.b: can&apos;t find dynamically referenced class libcore.io.Libcore</span><br></pre></td></tr></table></figure>
+<p>google了很多信息，找到了解决方法，我这里的修改方案如下，在每个需要混淆第三方类库的都添加<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-dontnote com.xx.**</span><br><span class="line">-dontwarn com.xx.**</span><br><span class="line">-keep class com.xx.** &#123; *; &#125;</span><br></pre></td></tr></table></figure></p>
+<p>然后奇迹般的打包成功了！具体也可以参考这篇文章</p>
+<p><a href="http://blog.csdn.net/u_xtian/article/details/7495023/" target="_blank" rel="external">Eclipse打包Android项目时用到proguard.cfg后，出现的Warning:can’t find referenced class问题的解决方案</a></p>
+<h2 id="2、AndroidManifest-xml配置的相关类不能混淆"><a href="#2、AndroidManifest-xml配置的相关类不能混淆" class="headerlink" title="2、AndroidManifest.xml配置的相关类不能混淆"></a>2、AndroidManifest.xml配置的相关类不能混淆</h2><p>然而好景不长，Apk安装后一打开就崩溃。然后打开日志，查看报错的问题，主要日志如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">java.lang.IllegalArgumentException: Unable to find GlideModule implementation</span><br><span class="line">	at com.bumptech.glide.module.ManifestParser.parseModule(ManifestParser.java:46)</span><br><span class="line">	at com.bumptech.glide.module.ManifestParser.parse(ManifestParser.java:30)</span><br><span class="line">	at com.bumptech.glide.Glide.get(Glide.java:149)</span><br><span class="line">	at com.bumptech.glide.RequestManager.&lt;init&gt;(RequestManager.java:62)</span><br><span class="line">	at com.bumptech.glide.RequestManager.&lt;init&gt;(RequestManager.java:53)</span><br><span class="line">	at com.bumptech.glide.manager.RequestManagerRetriever.supportFragmentGet(RequestManagerRetriever.java:198)</span><br><span class="line">	at com.bumptech.glide.manager.RequestManagerRetriever.get(RequestManagerRetriever.java:104)</span><br><span class="line">	at com.bumptech.glide.manager.RequestManagerRetriever.get(RequestManagerRetriever.java:87)</span><br><span class="line">	at com.bumptech.glide.Glide.with(Glide.java:629)</span><br><span class="line">	at com.company.business.global.imageloader.a.a.a(ImageLoaderImpl.java:91)</span><br><span class="line">	at com.company.business.global.imageloader.a.a.a(ImageLoaderImpl.java:85)</span><br><span class="line">	at com.company.ui.billing.a.c.a(SaleProductAda</span><br><span class="line"></span><br><span class="line">Caused by: java.lang.ClassNotFoundException: com.company.common.config.GlideConfiguration</span><br><span class="line">	at java.lang.Class.classForName(Native Method)</span><br><span class="line">	at java.lang.Class.forName(Class.java:308)</span><br><span class="line">	at java.lang.Class.forName(Class.java:272)</span><br><span class="line">	at com.bumptech.glide.module.ManifestParser.parseModule(ManifestParser.java:44)</span><br><span class="line">	... 103 more</span><br><span class="line"></span><br><span class="line">Caused by: java.lang.ClassNotFoundException: Didn&apos;t find class &quot;com.company.common.config.GlideConfiguration&quot; on path: DexPathList[[zip file &quot;/data/app/com.company-2/base.apk&quot;],nativeLibraryDirectories=[/data/app/com.company-2/lib/x86, /vendor/lib, /system/lib]]</span><br><span class="line">	at dalvik.system.BaseDexClassLoader.findClass(BaseDexClassLoader.java:56)</span><br><span class="line">	at java.lang.ClassLoader.loadClass(ClassLoader.java:511)</span><br><span class="line">	at java.lang.ClassLoader.loadClass(ClassLoader.java:469)</span><br><span class="line">	... 107 more</span><br><span class="line">	</span><br><span class="line">Suppressed: java.lang.ClassNotFoundException: com.company.common.config.GlideConfiguration</span><br><span class="line">	at java.lang.Class.classForName(Native Method)</span><br><span class="line">	at java.lang.BootClassLoader.findClass(ClassLoader.java:781)</span><br><span class="line">	at java.lang.BootClassLoader.loadClass(ClassLoader.java:841)</span><br><span class="line">	at java.lang.ClassLoader.loadClass(ClassLoader.java:504)</span><br><span class="line">	... 108 more</span><br><span class="line">	</span><br><span class="line">Caused by: java.lang.NoClassDefFoundError: Class not found using the boot class loader; no stack available</span><br></pre></td></tr></table></figure></p>
+<p>项目里用到了Glide图片缓存框架，我们在AndroidManifest.xml里面有这样的定义<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- Glide 相关配置 --&gt;</span><br><span class="line">&lt;meta-data</span><br><span class="line">    android:name=&quot;com.company.common.config.GlideConfiguration&quot;</span><br><span class="line">    android:value=&quot;GlideModule&quot; /&gt;</span><br></pre></td></tr></table></figure></p>
+<p>如果GlideConfiguration这个类被混淆了，程序当然找不到，从而导致配置出错，程序一进入使用到图片缓存框架的地方就崩溃了，所以应该在混淆文件里面再添加上一句<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-keep public class * implements  com.bumptech.glide.module.GlideModule</span><br></pre></td></tr></table></figure></p>
+<p>打包编译，运行OK没有崩溃。</p>
+<h2 id="3、如果使用json解析库，不要混淆model类"><a href="#3、如果使用json解析库，不要混淆model类" class="headerlink" title="3、如果使用json解析库，不要混淆model类"></a>3、如果使用json解析库，不要混淆model类</h2><p>运行后发现程序运行依然没有达到预期，有些跟后台交互的接口会请求出错，查看日志，原来是json解析出错，本地代码找不到某个字段，可是我本地代码明明是有的呀！<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">public class Book &#123;</span><br><span class="line">    private String name;</span><br><span class="line">    private Long id;</span><br><span class="line">    private String title;</span><br><span class="line"></span><br><span class="line">    public String getName() &#123;</span><br><span class="line">        return name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setName(String name) &#123;</span><br><span class="line">        this.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public Long getId() &#123;</span><br><span class="line">        return id;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setId(Long id) &#123;</span><br><span class="line">        this.id = id;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getTitle() &#123;</span><br><span class="line">        return title;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setTitle(String title) &#123;</span><br><span class="line">        this.title = title;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>于是添加了fastJson的忽略注解<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@JsonIgnoreProperties(ignoreUnknown = true)</span><br></pre></td></tr></table></figure></p>
+<p>但这治标不治本，虽然接口没报异常，但可能会把后台返回来的相关字段给忽略掉了。</p>
+<p>于是使出了杀手锏，反编译自己的apk，出奇的发现反编译出来的代码确实是少了一些变量<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">@JsonIgnoreProperties(ignoreUnknown = true)</span><br><span class="line">public class a &#123;</span><br><span class="line">    private Long a;</span><br><span class="line">    private String c;</span><br><span class="line"></span><br><span class="line">    public Long a() &#123;</span><br><span class="line">        return this.a;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String c() &#123;</span><br><span class="line">        return this.c;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这是什么原因呢？再google一番，原来是代码被优化，有些没使用到的字段、代码在混淆的过程中被优化去除掉了。一直都有听说混淆代码会帮助优化代码，减少apk体积，但不知道具体是怎么优化的，原来这里是自动帮去除了一些没有调用的方法、资源。这是proguard-rules.pro原有的optimize配置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># From Proguard-android-optimize</span><br><span class="line">-optimizations !code/simplification/arithmetic,!code/simplification/cast,!field/*,!class/merging/*</span><br><span class="line">-optimizationpasses 5</span><br><span class="line">-allowaccessmodification</span><br><span class="line">-dontpreverify</span><br></pre></td></tr></table></figure></p>
+<p>实际上我们使用了一些数据库框架的时候，自然不会调用model所有字段的getter、setter方法，比如ormLite数据库框架，一句create(model)就存入数据库了，自然的很多model的方法就被优化去掉了。</p>
+<p>因此在使用gson、fastJson时，model类不需要混淆，否则会出错，因为他们是利用发射来解析json，混淆后找不到对应的变量的getter、setter方法就会报空指针。</p>
+<p>所以，加上一句<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-keep com.model.** &#123; *; &#125;</span><br></pre></td></tr></table></figure></p>
+<p>打包编译，OK，正常运行。</p>
+<p>关于混淆更多详细的知识点，也推荐查看这篇文章</p>
+<p><a href="http://jp1017.github.io/2015/12/18/Android%E6%B7%B7%E6%B7%86%E9%82%A3%E4%BA%9B%E4%BA%8B%E5%84%BF//" target="_blank" rel="external">Android混淆那些事儿</a></p>
+<h2 id="4、关于混淆的一些发现"><a href="#4、关于混淆的一些发现" class="headerlink" title="4、关于混淆的一些发现"></a>4、关于混淆的一些发现</h2><p>发现一些有趣的事情，原生的混淆文件proguard-rules.pro已经默认添加了很多配置，平时不看的话根本不知道的事情</p>
+<p>比如不混淆所有序列化的类<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">-keepclassmembers class * implements java.io.Serializable &#123;</span><br><span class="line">    static final long serialVersionUID;</span><br><span class="line">    private static final java.io.ObjectStreamField[] serialPersistentFields;</span><br><span class="line">    private void writeObject(java.io.ObjectOutputStream);</span><br><span class="line">    private void readObject(java.io.ObjectInputStream);</span><br><span class="line">    java.lang.Object writeReplace();</span><br><span class="line">    java.lang.Object readResolve();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">-keep class  * implements java.io.Serializable &#123;</span><br><span class="line">    public &lt;methods&gt;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">-keep class * implements android.os.Parcelable &#123;</span><br><span class="line">  public static final android.os.Parcelable$Creator *;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>不混淆R资源文件，不然找不着相应的id<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-keep public class com.company.R$*&#123;</span><br><span class="line">	public static final int *;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>不混淆自定义View类、Activity类，不然在layout布局文件、AndroidManifest.xml里面找不找对应的类<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># keep setters in Views so that animations can still work.</span><br><span class="line"># see http://proguard.sourceforge.net/manual/examples.html#beans</span><br><span class="line">-keepclassmembers public class * extends android.view.View &#123;</span><br><span class="line">   void set*(***);</span><br><span class="line">   *** get*();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"># We want to keep class extends Activity</span><br><span class="line">-keep class * extends android.app.Activity&#123;*;&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="5、总结"><a href="#5、总结" class="headerlink" title="5、总结"></a>5、总结</h2><p>通过混淆的实践，扩充了一部分混淆的相关知识，也只有踩过坑之后，才知道如何走好后面的路。对于一些技术原理，应该要多实践、多总结，为自己做好技术积累。</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2017/04/05/SQLite实践总结/" itemprop="url">
                   SQLite实践总结
                 </a>
@@ -1112,111 +1232,13 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/05/22/hello-world/" itemprop="url">
-                  Hello World
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-05-22T19:56:19+08:00" content="2016-05-22">
-              2016-05-22
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+  </nav>
+
 
 
           </div>
@@ -1271,7 +1293,7 @@ var duoshuoQuery = {short_name:"lextime2013"};
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">10</span>
+              <span class="site-state-item-count">11</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

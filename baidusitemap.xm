@@ -4,6 +4,21 @@
 
     
   <url>
+    <loc>http://yoursite.com/2017/05/01/Android%E6%B7%B7%E6%B7%86%E6%89%93%E5%8C%85%E5%AE%9E%E6%88%98/</loc>
+    <lastmod>2017-05-01T14:10:38.000Z</lastmod>
+    <data>
+        <display>
+        <title>Android混淆打包实战</title>
+        <pubTime>2017-05-01T14:10:23.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://yoursite.com/2017/04/05/SQLite%E5%AE%9E%E8%B7%B5%E6%80%BB%E7%BB%93/</loc>
     <lastmod>2017-04-05T14:01:01.000Z</lastmod>
     <data>
